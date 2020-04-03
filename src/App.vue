@@ -3,7 +3,8 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/registration">Registration</router-link>
+      <router-link to="/registration">Registration</router-link> |
+      <router-link to="/orders-list">Orders</router-link>
     </div>
     <router-view/>
   </div>
@@ -49,6 +50,15 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+li {
+  list-style-type: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
 }
 
 #nav {

@@ -62,6 +62,9 @@ class App {
             fs_1.default.writeFileSync(this.dataFilePath, JSON.stringify(this.data, null, 2));
             next();
         });
+        this.app.get('/', (req, res, next) => {
+            res.json(this.data);
+        });
     }
     listen() {
         const ansi = {

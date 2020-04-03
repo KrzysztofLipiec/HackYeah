@@ -40,12 +40,12 @@
 </template>
 
 <script lang="ts">
-    import { Component, Prop, Vue } from 'vue-property-decorator';
+    import {Component, Vue} from 'vue-property-decorator';
     import {TForm} from "@/interfaces/TForm";
 
     @Component
     export default class RegistrationPanel extends Vue {
-        @Prop() private form: TForm;
+        private form: TForm;
 
         constructor() {
             super();

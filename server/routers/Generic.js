@@ -5,20 +5,28 @@ class Generic extends AbstractRouterHandler_1.AbstractRouterHandler {
     constructor(data) {
         super();
         this.data = data;
-        this.router.route('/*').post(this.setData.bind(this));
+        this.router.route('/*')
+            .post(this.setData.bind(this))
+            .get(this.getPathData.bind(this));
+    }
+    getPathData(req, res) {
+        res.json(this.traceObject(req.path.substr(1).split('/'), this.data));
     }
     traceObject(path, object, data) {
         let part = path.shift();
         if (part) {
             object[part] = object[part] || {};
             if (!path.length) {
-                for (let key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        object[part][key] = data[key] || undefined;
+                if (data) {
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            object[part][key] = data[key] || undefined;
+                        }
                     }
                 }
+                return object[part];
             }
-            this.traceObject(path, object[part], data);
+            return this.traceObject(path, object[part], data);
         }
     }
     setData(req, res) {

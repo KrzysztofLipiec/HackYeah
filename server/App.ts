@@ -66,6 +66,9 @@ class App {
             fs.writeFileSync(this.dataFilePath, JSON.stringify(this.data, null, 2));
             next();
         });
+        this.app.get('/', (req, res, next) => {
+            res.json(this.data);
+        })
     }
 
     private listen(): void {

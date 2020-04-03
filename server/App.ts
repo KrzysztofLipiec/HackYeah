@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import express from 'express';
 import fs from 'fs';
 import { IncomingMessage } from 'http';
@@ -5,6 +6,7 @@ import { IncomingMessage } from 'http';
 import { IData } from './interfaces/IData';
 import { AbstractRouterHandler } from './routers/AbstractRouterHandler';
 import { Authentication } from './routers/Authentication';
+import { Generic } from './routers/Generic';
 
 class App {
     private app = express();
@@ -19,8 +21,10 @@ class App {
                 users: []
             };
         }
+        this.app.use(bodyParser());
         this.routerHandlers = [
-            new Authentication(this.data.users)
+            new Authentication(this.data.users),
+            new Generic(this.data)
         ];
 
         this.setHeaders();

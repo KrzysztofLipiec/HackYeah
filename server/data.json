@@ -4,5 +4,12 @@
     {
       "username": "testUser"
     }
-  ]
+  ],
+  "rabarbar": {
+    "test": {
+      "test": {
+        "testowy": "kupa"
+      }
+    }
+  }
 }

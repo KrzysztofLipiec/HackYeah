@@ -21,7 +21,8 @@ export class Authentication extends AbstractRouterHandler {
         res.json(this.users[0]);
     }
 
-    public getData(data: IData): void {
+    public getData(data: IData): IData {
         data.users = this.users;
+        return data;
     }
 }

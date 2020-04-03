@@ -18,6 +18,7 @@ class Authentication extends AbstractRouterHandler_1.AbstractRouterHandler {
     }
     getData(data) {
         data.users = this.users;
+        return data;
     }
 }
 exports.Authentication = Authentication;

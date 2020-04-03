@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Shops from '../views/Shops.vue'
-import RegistrationPanel from '../views/RegistrationPanel.vue'
 
 Vue.use(VueRouter);
 
@@ -32,6 +31,14 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/RegistrationPanel.vue')
+  },
+  {
+    path: '/orders-list',
+    name: 'OrdersList',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/OrdersList.vue')
   }
 ];
 

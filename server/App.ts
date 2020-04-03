@@ -7,6 +7,7 @@ import { IData } from './interfaces/IData';
 import { AbstractRouterHandler } from './routers/AbstractRouterHandler';
 import { Authentication } from './routers/Authentication';
 import { Generic } from './routers/Generic';
+import { MapRouter } from './routers/MapRouter';
 
 class App {
     private app = express();
@@ -24,6 +25,7 @@ class App {
         this.app.use(bodyParser());
         this.routerHandlers = [
             new Authentication(this.data.users),
+            new MapRouter(),
             new Generic(this.data)
         ];
 

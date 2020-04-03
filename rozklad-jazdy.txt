@@ -1,0 +1,64 @@
+1. Aplikacje
+    - Backstage
+        - rejestracja sklepu / logowanie
+            -email
+            -haslo
+        - strona sklepu
+            -dashboard 
+                -ustawienia sklepu
+                -lista zamowien (interval i chooy)
+                -odnosnik do asortymentu
+                
+                -info na temat tego, ze dane sklepu nie sa uzupelnione *
+                -info na temat brakow*
+            -asortyment
+                -dodaj/edytuj produkt
+                    -******AI**********
+                    -******Rozpoznawanie mowy*******???? moze byc fajne
+                    -fotka
+                    -nazwa
+                    -zaopatrzenie(duzo/srednio/malo/brak) editable
+                    -cena
+                    -kategoria (tagi)
+
+                    -zaawansowane
+                        -jednostka (kg/szt/l/mb)
+                        -ilosc (automat)
+                -lista asortymentu (list*/tile)
+            -Ustawienia sklepu
+                -nazwa
+                -adres
+                -nr konta
+                -nip
+                -godziny otwarcia
+                -wielkosc (duzy/sredni/maly sklep)
+                -logo* (default logo i chooy)
+                -google maps
+
+    - Frontstage
+        -main-page
+            -moje zamowienia
+                -UL->LI z zamowieniami.
+            -zamow
+                -wyszukuje sklepy w okolicy
+                    -w zadanej godzinie (min pol godziny po otwarciu sklepu)
+                
+                -oznaczenie sklepow aktywnych/zawerzenie odlegosci
+                    -mapa (open street map)
+                    -nastepny widok
+                -wyszukiwarka asortymentu
+                    -********wybor mowa*******
+                    -input search (nazwa, tag) 3 znaki
+                    -lista produktow
+                        -priorytetyzowac sklepy w ktorych juz wybralismy artykuly
+                -koszyk
+                    -podsumowanie
+                    -cena
+                    -sklepy do ktorych trzeba isc
+                    -optymalizacje (kilka propozycji ulatwienia drogi/ceny)* powinno byc dzialajace albo conajmniej DOBRZE zamockowane
+                -platnosc
+                    -blik       \
+                    -karta       --- MOCK
+                    -przelew    /
+                -nawigacja do moje zamowienia z toastem gratulacyjnym
+

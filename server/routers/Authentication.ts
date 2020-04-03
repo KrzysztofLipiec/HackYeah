@@ -13,7 +13,8 @@ export class Authentication extends AbstractRouterHandler {
                 username: 'testUser'
             });
         }
-        this.router.route('/auth').post(this.returnUser.bind(this));
+        this.router.route('/auth')
+            .post(this.returnUser.bind(this));
     }
 
     private returnUser(req: IncomingMessage, res: Response, next: () => void): void {

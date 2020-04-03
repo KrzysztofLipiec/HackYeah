@@ -11,5 +11,5 @@ export abstract class AbstractRouterHandler {
         return this.router;
     };
 
-    public abstract getData(data: IData): void;
+    public abstract getData(data: IData): IData;
 }

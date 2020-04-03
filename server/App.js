@@ -3,9 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
 const Authentication_1 = require("./routers/Authentication");
+const Generic_1 = require("./routers/Generic");
 class App {
     constructor(port, dataFilePath, appPort) {
         this.port = port;
@@ -21,8 +23,10 @@ class App {
                 users: []
             };
         }
+        this.app.use(body_parser_1.default());
         this.routerHandlers = [
-            new Authentication_1.Authentication(this.data.users)
+            new Authentication_1.Authentication(this.data.users),
+            new Generic_1.Generic(this.data)
         ];
         this.setHeaders();
         this.setFileSaver();
@@ -57,6 +61,9 @@ class App {
             });
             fs_1.default.writeFileSync(this.dataFilePath, JSON.stringify(this.data, null, 2));
             next();
+        });
+        this.app.get('/', (req, res, next) => {
+            res.json(this.data);
         });
     }
     listen() {

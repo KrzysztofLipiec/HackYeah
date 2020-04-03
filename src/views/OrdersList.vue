@@ -3,7 +3,7 @@
         <h1>Your orders</h1>
 
         <ul class="d-flex align-content-center flex-wrap justify-content-around" fluid="md">
-            <router-link to="/orders/" v-for="order in orders" tag="li">
+            <li v-for="order in orders">
                 <b-card
                         :title="order.name"
                         :img-src="order.shopPhoto"
@@ -21,7 +21,7 @@
                         </b-list-group>
                     </b-card-text>
                 </b-card>
-            </router-link>
+            </li>
         </ul>
     </div>
 </template>

@@ -38,7 +38,7 @@
             this.fetchOrders();
         }
         private fetchOrders(): void {
-            const userId: string = window.getUserId();
+            const userId: string = (<any>window).getUserId();
             const item: TShopOrder = {
                 name: 'chrabo',
                 shopPhoto: 'https://ocs-pl.oktawave.com/v1/AUTH_2887234e-384a-4873-8bc5-405211db13a2/spidersweb/2020/04/biedronka-godziny-otwarcia-1180x541.jpg',

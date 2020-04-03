@@ -2,6 +2,7 @@
   <div id="map" style="height: 400px"></div>
 </template>
 <script>
+import { state } from "../state";
 const defaultZoom = 14;
 export default {
   mounted: function() {
@@ -10,6 +11,7 @@ export default {
 };
 var storeLayers = [];
 let map;
+
 function initMap() {
   let locationMarker;
   let shopMarkers;
@@ -23,11 +25,11 @@ function initMap() {
     attribution: osmAttrib
   });
   map.locate({ setView: true, maxZoom: defaultZoom });
-  map.on("locationfound", locationEvent => {
+  map.on("locationfound", async locationEvent => {
     if (!locationMarker) {
       locationMarker = new L.circleMarker(locationEvent.latlng);
       clearStores();
-      let stores = getStores(locationEvent.latlng);
+      let stores = await getStores(locationEvent.latlng);
       drawStores(stores);
       map.addLayer(locationMarker);
     } else {
@@ -48,13 +50,12 @@ function clearStores() {
   }
 }
 
-function getStores(latlng) {
-  const distanceFactor = 2;
-  const delta = Math.pow(10, -distanceFactor);
-  return [
-    { location: { lat: latlng.lat - delta, lng: latlng.lng - delta } },
-    { location: { lat: latlng.lat + delta, lng: latlng.lng + delta } }
-  ];
+async function getStores(latlng) {
+  return (
+    await fetch(`${state.apiUrl}map/${latlng.lat}/${latlng.lng}/2`, {
+      method: "GET"
+    })
+  ).json();
 }
 
 function drawStores(stores) {

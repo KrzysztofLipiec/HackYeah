@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
 const Authentication_1 = require("./routers/Authentication");
 const Generic_1 = require("./routers/Generic");
+const MapRouter_1 = require("./routers/MapRouter");
 class App {
     constructor(port, dataFilePath, appPort) {
         this.port = port;
@@ -26,6 +27,7 @@ class App {
         this.app.use(body_parser_1.default());
         this.routerHandlers = [
             new Authentication_1.Authentication(this.data.users),
+            new MapRouter_1.MapRouter(),
             new Generic_1.Generic(this.data)
         ];
         this.setHeaders();

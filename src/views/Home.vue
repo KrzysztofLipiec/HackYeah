@@ -10,7 +10,7 @@
 
         <p>Browse through variety of products in local shops, select convenient pickup time, pay safely online.</p>
 
-        <b-button variant="success" size="lg" to="/order">Start buying</b-button>&nbsp;
+        <b-button variant="success" size="lg" to="/shops">Start buying</b-button>&nbsp;
         <b-button variant="light" size="lg" href="#">Do Something Else</b-button>
       </b-jumbotron>
     </b-container>

@@ -10,7 +10,8 @@ class Authentication extends AbstractRouterHandler_1.AbstractRouterHandler {
                 username: 'testUser'
             });
         }
-        this.router.route('/auth').post(this.returnUser.bind(this));
+        this.router.route('/auth')
+            .post(this.returnUser.bind(this));
     }
     returnUser(req, res, next) {
         res.json(this.users[0]);

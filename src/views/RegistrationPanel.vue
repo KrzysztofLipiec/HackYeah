@@ -40,23 +40,24 @@
 </template>
 
 <script lang="ts">
-    export default {
-        name: 'RegistrationPanel',
-        data() {
-            return {
-                form: {
-                    email: '',
-                    password: ''
-                }
-            }
-        },
-        methods: {
-            login(): void {
-                console.log('Send user data...');
-            }
-        },
-        components: {
+    import { Component, Prop, Vue } from 'vue-property-decorator';
+    import {TForm} from "@/interfaces/TForm";
 
+    @Component
+    export default class RegistrationPanel extends Vue {
+        @Prop() private form: TForm;
+
+        constructor() {
+            super();
+            this.form = {
+                email: '',
+                password: ''
+            };
+        }
+
+        login(): void {
+            console.log('Send user data...');
         }
     }
+
 </script>

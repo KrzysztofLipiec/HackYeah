@@ -22,6 +22,13 @@
           localStorage.setItem('hackYeahUserID', this.uuidv4());
         }
       },
+      bootstrapStore() {
+        if (!window.getUSerId) {
+          window.getUserId = () => {
+            return localStorage.getItem('hackYeahUserID');
+          }
+        }
+      },
       uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -30,7 +37,8 @@
       }
     },
     created() {
-      this.generateUserId()
+      this.generateUserId();
+      this.bootstrapStore();
     }
   }
 </script>

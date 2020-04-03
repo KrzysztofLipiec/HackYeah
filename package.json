@@ -4,8 +4,9 @@
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "server:start": "node server/app.js",
+        "build": "vue-cli-service build && npm run server:build:ts",
+        "server:build:ts": "node node_modules/typescript/bin/tsc --project server/tsconfig.json",
+        "server:start": "node server/App.js",
         "server:watch:ts": "node node_modules/typescript/bin/tsc --project server/tsconfig.json -w"
     },
     "dependencies": {

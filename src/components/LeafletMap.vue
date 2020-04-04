@@ -87,6 +87,7 @@ export default class LeafletMap extends Vue {
   private onPopupClick(e: MouseEvent, store: any, marker: any) {
     const t = e.target as HTMLElement;
     if (t.tagName === "BUTTON") {
+      e.preventDefault();
       if (this.selectedStores.includes(store)) {
         this.selectedStores.splice(this.selectedStores.indexOf(store), 1);
         marker.setIcon(markerIcon);

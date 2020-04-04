@@ -52,6 +52,14 @@ export default class ShopOrder extends Vue {
     this.getOrder();
   }
 
+  public reportNoGoods(): void {
+    fetch(`${state.apiUrl}orders/${this.$route.params.orderId}/ready`, {
+      method: "post"
+    }).then((res: Response) => {
+      this.$router.push("/backstageDashboard");
+    });
+  }
+
   public backToDashboard(): void {
     this.$router.push("/backstageDashboard");
   }
@@ -59,6 +67,8 @@ export default class ShopOrder extends Vue {
   public applyChanges(): void {
     fetch(`${state.apiUrl}orders/${this.$route.params.orderId}/ready`, {
       method: "post"
+    }).then((res: Response) => {
+      this.$router.push("/backstageDashboard");
     });
   }
 

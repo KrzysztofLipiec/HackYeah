@@ -11,10 +11,12 @@
           <b-list-group-item
             v-for="(order, index) in orders"
             :key="index"
-            @click="$router.push(`/order/shop/${order.id}`)"
+            @click="goToOrder(order)"
             button
+            :variant="order.status === 'ready' ? 'success' : ''"
           >
             <span>{{order.name}}</span>
+            <span>{{order.status}}</span>
             <span>{{(new Date(order.timestamp)).toLocaleTimeString()}}</span>
           </b-list-group-item>
         </b-list-group>
@@ -26,12 +28,19 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { TShopOrder } from "../../../interfaces/TShopOrder";
 import state from "@/state";
+import { OrderStatus } from "../../../interfaces/OrderStatus";
 
 @Component
 export default class Order extends Vue {
   private shopName: string = "";
   private interval: number = 0;
   private orders: Array<TShopOrder> = [];
+
+  private goToOrder(order: TShopOrder): void {
+    if (order.status !== OrderStatus.ready) {
+      this.$router.push(`/order/shop/${order.id}`);
+    }
+  }
 
   public mounted(): void {
     this.getOrders();
@@ -54,5 +63,8 @@ export default class Order extends Vue {
 .orders-list > .list-group-item {
   display: flex;
   justify-content: space-between;
+}
+.order-ready {
+  background: ;
 }
 </style>

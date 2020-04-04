@@ -19,6 +19,7 @@ export class Orders extends AbstractRouterHandler {
 
     private setOrderReady(req: Request, res: Response): void {
         this._getOrderById(req.params.id).status = req.params.status as OrderStatus;
+        res.json({ success: true });
     }
 
     private _getOrderById(id: string): TShopOrder {

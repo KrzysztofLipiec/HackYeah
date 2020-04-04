@@ -35,7 +35,7 @@
           </b-col>
           <b-col>
             <h1>My cart 🛒</h1>
-            <cart-summary :orders="shopOrders"></cart-summary>
+            <cart-summary :items="selectedItems"></cart-summary>
             <b-button v-if="hasSomethingInCart" type="submit" size="lg" variant="success">Checkout</b-button>
           </b-col>
         </b-row>
@@ -84,6 +84,7 @@ export default class CollectingItems extends Vue {
   getMostPopularItems(): TShopItem[] {
     return [
       {
+        id: "piwko",
         name: "Piwo",
         count: 1,
         price: 1,
@@ -93,28 +94,6 @@ export default class CollectingItems extends Vue {
         measure: Measure.kg
       }
     ];
-  }
-
-  get shopOrders(): TShopOrder[] {
-    // TODO, fetch it
-    const groupedItems = new Map<string, TShopItem[]>();
-    this.selectedItems.forEach(item => {
-      if (!groupedItems.has(item.shopName)) {
-        groupedItems.set(item.shopName, []);
-      }
-      groupedItems.get(item.shopName)!.push(item);
-    });
-    const result: TShopOrder[] = [];
-    groupedItems.forEach((items, shopName) => {
-      const order: TShopOrder = {
-        name: shopName,
-        shopPhoto: "",
-        items: items,
-        timestamp: Date.now()
-      };
-      result.push(order);
-    });
-    return result;
   }
 
   getVariant(suggestion: TShopItem): string {
@@ -127,8 +106,7 @@ export default class CollectingItems extends Vue {
 
   mounted() {
     this.selectedItems.length = 0;
-    const shopOrders = state.cart.shopOrders;
-    this.selectedItems.push(...shopOrders.flatMap(o => o.items));
+    this.selectedItems.push(...state.cart.items);
   }
 
   async onQueryInput() {
@@ -141,19 +119,28 @@ export default class CollectingItems extends Vue {
 
   onSubmit(e: Event): void {
     e.preventDefault();
-    console.log(this.selectedItems);
-    state.cart = { shopOrders: this.shopOrders };
     this.$router.push("checkout");
   }
 
   toggleSuggestion(e: MouseEvent, suggestion: TShopItem, index: number) {
     e.preventDefault();
     if (this.isSuggestionSelected(suggestion)) {
-      this.selectedItems.splice(this.selectedItems.indexOf(suggestion), 1);
+      this.selectedItems.splice(
+        this.selectedItems.findIndex(s => s.id === suggestion.id),
+        1
+      );
+      state.cart.items.slice(
+        state.cart.items.findIndex(s => s.id === suggestion.id),
+        1
+      );
     } else {
       this.selectedItems.push({
-        count: 1,
-        ...suggestion
+        ...suggestion,
+        count: 1
+      });
+      state.cart.items.push({
+        ...suggestion,
+        count: 1
       });
     }
   }

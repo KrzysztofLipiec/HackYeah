@@ -12,7 +12,8 @@ let stateDefault: State = {
     shopName: '',
     apiUrl: 'http://localhost:9123/',
     cart: {
-        shopOrders: []
+        pickupTime: 0,
+        items: []
     }
 }
 let state: State | null = null;

@@ -17,14 +17,19 @@
             <b-form-group>
               <b-form-checkbox v-model="acceptedTerms">I've read terms and conditions wink wink</b-form-checkbox>
             </b-form-group>
-            <b-button size="lg" variant="success" type="submit">Make it rain! 💸</b-button>
+            <b-button
+              size="lg"
+              variant="success"
+              type="submit"
+              :disabled="isPending"
+            >Make it rain! 💸</b-button>
             <b-button size="lg" variant="light" @click="goBack">Go back</b-button>
           </b-form>
         </b-card>
       </b-col>
       <b-col>
         <h1>My cart 🛒</h1>
-        <cart-summary :orders="cartItems"></cart-summary>
+        <cart-summary :items="cartItems"></cart-summary>
       </b-col>
     </b-row>
   </b-container>
@@ -32,7 +37,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import state from "../../state";
-import { TShopOrder } from "../../interfaces/TShopOrder";
+import { TShopItem } from "../../interfaces/TShopItem";
 import CartSummary from "../../components/frontstage/CartSummary.vue";
 import { PaymentMethodType } from "@/interfaces/PaymentMethodType";
 @Component({
@@ -42,7 +47,8 @@ import { PaymentMethodType } from "@/interfaces/PaymentMethodType";
 })
 export default class Checkout extends Vue {
   acceptedTerms: boolean = true;
-  cartItems: TShopOrder[] = [];
+  cartItems: TShopItem[] = [];
+  isPending: boolean = false;
   paymentMethodType: PaymentMethodType = PaymentMethodType.creditCard;
 
   public goBack(e: MouseEvent) {
@@ -52,11 +58,19 @@ export default class Checkout extends Vue {
 
   public mounted() {
     this.cartItems.length = 0;
-    this.cartItems.push(...state.cart.shopOrders);
+    this.cartItems.push(...state.cart.items);
   }
 
   public onSubmit(e: Event) {
     e.preventDefault();
+    this.isPending = true;
+    void fetch(`${state.apiUrl}orders`, {
+      body: JSON.stringify(state.cart),
+      method: "POST"
+    }).then(() => {
+      alert("OK");
+      this.isPending = false;
+    });
   }
 }
 </script>

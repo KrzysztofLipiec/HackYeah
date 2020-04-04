@@ -51,7 +51,6 @@ import {Measure} from "@/interfaces/Measure";
                     <b class="ml-1 item-price__title">Item price</b>
                 </div>
                 <div class="d-flex flex-row-reverse align-content-center">
-                    <b-button class="mr-2" @click="applyChanges" variant="primary" size="xs">Apply changes</b-button>
                     <b-button class="mr-2" @click="addNewItem" variant="success" size="xs">Add item</b-button>
                 </div>
             </b-list-group-item>
@@ -123,8 +122,12 @@ import {Measure} from "@/interfaces/Measure";
             this.shopItems = fetchedItems;
         }
 
-        private async createOrUpdateItem(item: TShopItem, action: string): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${action}`, body: JSON.stringify(item)});
+        private async createItem(item: TShopItem): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, body: JSON.stringify(item)});
+        }
+
+        private async updateItem(item: TShopItem): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, body: JSON.stringify(item)});
         }
 
         private editItem(): void {
@@ -169,17 +172,13 @@ import {Measure} from "@/interfaces/Measure";
         public applyChangesInItem(): void {
             if (this.isNewItem) {
                 this.shopItems.push(this.selectedItemData);
-                this.createOrUpdateItem(this.selectedItemData, TFetchActions.POST);
+                this.createItem(this.selectedItemData);
             } else {
                 this.editItem();
-                this.createOrUpdateItem(this.shopItems[this.selectedItemIndex], TFetchActions.PUT);
+                this.updateItem(this.shopItems[this.selectedItemIndex]);
             }
             this.isNewItem = false;
             this.closeEditModal();
-        }
-
-        public applyChanges(): void {
-            console.log('save changes');
         }
 
     }

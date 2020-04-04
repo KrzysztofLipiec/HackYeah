@@ -251,16 +251,6 @@ b {
   background-color: var(--primary-color-light);
   color: var(--text-on-primary);
 }
-.btn-success {
-  background-color: var(--secondary-color);
-  border: none;
-  color: var(--text-on-secondary);
-  transition: background-color 0.2s ease-in-out;
-}
-.btn-success:hover {
-  background-color: var(--secondary-color-light);
-  color: var(--text-on-secondary);
-}
 .icon {
   cursor: pointer;
 }

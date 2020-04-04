@@ -78,4 +78,14 @@ ul {
   margin: 0;
   padding: 0;
 }
+.btn-success {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--text-on-secondary);
+  transition: background-color 0.2s ease-in-out;
+}
+.btn-success:hover {
+  background-color: var(--secondary-color-light);
+  color: var(--text-on-secondary);
+}
 </style>

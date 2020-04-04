@@ -10,11 +10,25 @@ export class Orders extends AbstractRouterHandler {
 
     constructor(private orders: Array<TShopOrder> = []) {
         super();
-        this.router.route('/orders').get(this.getAllOrders.bind(this));
-        this.router.route('/orders/shop/:shopName').get(this.getOrders.bind(this));
-        this.router.route('/orders/user/:userName').get(this.getUserOrders.bind(this));
-        this.router.route('/orders/:id').get(this.getOrderById.bind(this));
-        this.router.route('/orders/:id/:status').post(this.setOrderReady.bind(this));
+        this.router.route('/orders')
+            .get(this.getAllOrders.bind(this))
+            .post(this.addOrder.bind(this));
+        this.router.route('/orders/shop/:shopName')
+            .get(this.getOrders.bind(this));
+        this.router.route('/orders/user/:userName')
+            .get(this.getUserOrders.bind(this));
+        this.router.route('/orders/:id')
+            .get(this.getOrderById.bind(this));
+        this.router.route('/orders/:id/:status')
+            .post(this.setOrderReady.bind(this));
+    }
+
+    private addOrder(req: Request, res: Response): void {
+        let order = req.body;
+        order.id = AbstractRouterHandler.getGuid();
+        order.status = OrderStatus.waiting;
+        this.orders.push(order);
+        res.json(order);
     }
 
     private setOrderReady(req: Request, res: Response): void {

@@ -65,18 +65,25 @@ export default class Checkout extends Vue {
   public onSubmit(e: Event) {
     e.preventDefault();
     this.isPending = true;
+    const payload: any = {
+      name: state.userName,
+      pickupTime: state.cart.pickupTime,
+      items: state.cart.items
+    };
     void fetch(`${state.apiUrl}orders`, {
-      body: JSON.stringify({
-        name: state.userName,
-        pickupTime: state.cart.pickupTime,
-        items: state.cart.items
-      }),
+      body: JSON.stringify(payload),
       method: TFetchActions.POST,
       headers: { "content-type": "application/json" }
-    }).then(() => {
-      alert("OK");
-      this.isPending = false;
-    });
+    })
+      .then(() => {
+        alert("OK");
+        this.isPending = false;
+      })
+      .catch(e => {
+        alert("NOT OK");
+        console.error(e);
+        this.isPending = false;
+      });
   }
 }
 </script>

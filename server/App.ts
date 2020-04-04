@@ -9,6 +9,7 @@ import { Authentication } from './routers/Authentication';
 import { Generic } from './routers/Generic';
 import { MapRouter } from './routers/MapRouter';
 import { Orders } from './routers/Order';
+import { Products } from './routers/Products';
 
 class App {
     private app = express();
@@ -31,6 +32,7 @@ class App {
             new Authentication(this.data.users),
             new MapRouter(),
             new Orders(this.data.orders),
+            new Products(this.data.products),
             new Generic(this.data)
         ];
 

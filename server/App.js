@@ -10,6 +10,7 @@ const Authentication_1 = require("./routers/Authentication");
 const Generic_1 = require("./routers/Generic");
 const MapRouter_1 = require("./routers/MapRouter");
 const Order_1 = require("./routers/Order");
+const Products_1 = require("./routers/Products");
 class App {
     constructor(port, dataFilePath, appPort) {
         this.port = port;
@@ -32,6 +33,7 @@ class App {
             new Authentication_1.Authentication(this.data.users),
             new MapRouter_1.MapRouter(),
             new Order_1.Orders(this.data.orders),
+            new Products_1.Products(this.data.products),
             new Generic_1.Generic(this.data)
         ];
         this.setHeaders();

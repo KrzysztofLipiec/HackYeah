@@ -1,4 +1,4 @@
-import { TShopItem } from '@/interfaces/TShopItem';
+import { TShopItem } from './TShopItem';
 
 export interface TShopOrder {
     name: string;

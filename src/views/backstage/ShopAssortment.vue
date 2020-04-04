@@ -101,120 +101,130 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
-    import {Availability} from "@/interfaces/Availability";
-    import {TShopItem} from "@/interfaces/TShopItem";
-    import {Measure} from "@/interfaces/Measure";
-    import state from "@/state";
-    import {TFetchActions} from "@/interfaces/TFetchActions";
+import { Component, Vue } from "vue-property-decorator";
+import { Availability } from "@/interfaces/Availability";
+import { TShopItem } from "@/interfaces/TShopItem";
+import { Measure } from "@/interfaces/Measure";
+import state from "@/state";
+import { TFetchActions } from "@/interfaces/TFetchActions";
 
-    @Component
-    export default class ShopAssortment extends Vue {
+@Component
+export default class ShopAssortment extends Vue {
+  availabilityOptions: Availability[];
+  measureOptions: Measure[];
+  shopItems: TShopItem[] = [];
+  isEditModalOpen: boolean = false;
+  isNewItem: boolean = false;
+  selectedItemData: TShopItem;
+  selectedItemIndex: number;
+  shopName: string;
 
-        availabilityOptions: Availability[];
-        measureOptions: Measure[];
-        shopItems: TShopItem[] = [];
-        isEditModalOpen: boolean = false;
-        isNewItem: boolean = false;
-        selectedItemData: TShopItem;
-        selectedItemIndex: number;
-        shopName: string;
+  constructor() {
+    super();
+    this.availabilityOptions = [
+      Availability.high,
+      Availability.medium,
+      Availability.low
+    ];
+    this.measureOptions = [Measure.piece, Measure.kg];
+    this.selectedItemIndex = 0;
+    this.shopName = state.shopName;
+    this.selectedItemData = this.createEmptyItem();
+    void this.fetchShopItems();
+  }
 
-        constructor() {
-            super();
-            this.availabilityOptions = [
-                Availability.high,
-                Availability.medium,
-                Availability.low,
-            ];
-            this.measureOptions = [
-                Measure.piece,
-                Measure.kg
-            ];
-            this.selectedItemIndex = 0;
-            this.shopName = state.shopName;
-            this.selectedItemData = this.createEmptyItem();
-            void this.fetchShopItems();
-        }
+  private async fetchShopItems(): Promise<void> {
+    const apiResponse: Response = await fetch(
+      `${state.apiUrl}products/${state.shopName}`,
+      { method: "GET" }
+    );
+    const fetchedItems: TShopItem[] = await apiResponse.json();
+    this.shopItems = fetchedItems;
+  }
 
-        private async fetchShopItems(): Promise<void> {
-            const apiResponse: Response = await fetch(`${state.apiUrl}products/${state.shopName}`, {method: "GET"});
-            const fetchedItems: TShopItem[] = await apiResponse.json();
-            this.shopItems = fetchedItems;
-        }
+  private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
+    await fetch(`${state.apiUrl}products/${state.shopName}`, {
+      method: `${TFetchActions.POST}`,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(item)
+    });
+  }
 
-        private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, headers: {'content-type': 'application/json'},  body: JSON.stringify(item)});
-        }
+  private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
+    await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {
+      method: `${TFetchActions.PUT}`,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(item)
+    });
+  }
 
-        private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, headers: {'content-type': 'application/json'}, body: JSON.stringify(item)});
-        }
+  private async backendProcedureRemoveItem(item: TShopItem): Promise<void> {
+    await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {
+      method: `${TFetchActions.DELETE}`
+    });
+  }
 
-        private async backendProcedureRemoveItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.DELETE}`});
-        }
+  private editItem(): void {
+    this.shopItems[this.selectedItemIndex].name = this.selectedItemData.name;
+    this.shopItems[this.selectedItemIndex].count = this.selectedItemData.count;
+    this.shopItems[this.selectedItemIndex].price = this.selectedItemData.price;
+    this.shopItems[
+      this.selectedItemIndex
+    ].availability = this.selectedItemData.availability;
+    this.shopItems[
+      this.selectedItemIndex
+    ].measure = this.selectedItemData.measure;
+  }
 
-        private editItem(): void {
-            this.shopItems[this.selectedItemIndex].name = this.selectedItemData.name;
-            this.shopItems[this.selectedItemIndex].count = this.selectedItemData.count;
-            this.shopItems[this.selectedItemIndex].price = this.selectedItemData.price;
-            this.shopItems[this.selectedItemIndex].availability = this.selectedItemData.availability;
-            this.shopItems[this.selectedItemIndex].measure = this.selectedItemData.measure;
-        }
+  private createEmptyItem(): TShopItem {
+    return {
+      name: "",
+      count: 0,
+      price: 0,
+      measure: Measure.piece,
+      availability: Availability.low,
+      photo: ""
+    };
+  }
 
-        private createEmptyItem(): TShopItem {
-            return {
-                name: '',
-                count: 0,
-                price: 0,
-                measure: Measure.piece,
-                availability: Availability.low,
-                photo: ''
-            };
-        }
+  public addNewItem(): void {
+    this.selectedItemData = this.createEmptyItem();
+    this.isNewItem = true;
+    this.isEditModalOpen = true;
+  }
 
-        public addNewItem(): void {
-            this.selectedItemData = this.createEmptyItem();
-            this.isNewItem = true;
-            this.isEditModalOpen = true;
-        }
+  public removeItem(index: number): void {
+    const removedItem: TShopItem = this.shopItems.splice(index, 1)[0];
+    this.backendProcedureRemoveItem(removedItem);
+  }
 
-        public removeItem(index: number): void {
-            const removedItem: TShopItem = this.shopItems.splice(index, 1)[0];
-            this.backendProcedureRemoveItem(removedItem)
-        }
+  public openEditModal(item: TShopItem, index: number) {
+    this.selectedItemData = JSON.parse(JSON.stringify(item));
+    this.selectedItemIndex = index;
+    this.isEditModalOpen = true;
+  }
 
-        public openEditModal(item: TShopItem, index: number) {
-            this.selectedItemData = JSON.parse(JSON.stringify(item));
-            this.selectedItemIndex = index;
-            this.isEditModalOpen = true;
-        }
+  public closeEditModal() {
+    this.isEditModalOpen = false;
+  }
 
-        public closeEditModal() {
-            this.isEditModalOpen = false;
-        }
-
-        public applyChangesInItem(): void {
-            if (this.isNewItem) {
-                this.shopItems.push(this.selectedItemData);
-                this.backendProcedureCreateItem(this.selectedItemData);
-            } else {
-                this.editItem();
-                this.backendProcedureUpdateItem(this.shopItems[this.selectedItemIndex]);
-            }
-            this.isNewItem = false;
-            this.closeEditModal();
-        }
-
-        public isValidUrl(photoUrl: string): boolean{
-            const checkUrl: RegExp = new RegExp('(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\\.(?:jpg|gif|png))(?:\\?([^#]*))?(?:#(.*))?');
-            return checkUrl.test(photoUrl);
-        }
-
+  public applyChangesInItem(): void {
+    if (this.isNewItem) {
+      this.shopItems.push(this.selectedItemData);
+      this.backendProcedureCreateItem(this.selectedItemData);
+    } else {
+      this.editItem();
+      this.backendProcedureUpdateItem(this.shopItems[this.selectedItemIndex]);
     }
     this.isNewItem = false;
     this.closeEditModal();
+  }
+
+  public isValidUrl(photoUrl: string): boolean {
+    const checkUrl: RegExp = new RegExp(
+      "(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\\.(?:jpg|gif|png))(?:\\?([^#]*))?(?:#(.*))?"
+    );
+    return checkUrl.test(photoUrl);
   }
 }
 </script>

@@ -48,10 +48,10 @@ export default class CartSummary extends Vue {
       return [];
     }
     this.items.forEach(item => {
-      if (!groupedItems.has(item.shopName)) {
-        groupedItems.set(item.shopName, []);
+      if (!groupedItems.has(item.shopName!)) {
+        groupedItems.set(item.shopName!, []);
       }
-      groupedItems.get(item.shopName)!.push(item);
+      groupedItems.get(item.shopName!)!.push(item);
     });
     const result: GroupedItem[] = [];
     groupedItems.forEach((items, shopName) => {

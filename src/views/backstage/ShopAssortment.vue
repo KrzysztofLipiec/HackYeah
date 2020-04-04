@@ -84,6 +84,7 @@ import {Measure} from "@/interfaces/Measure";
     import {Availability} from "@/interfaces/Availability";
     import {TShopItem} from "@/interfaces/TShopItem";
     import {Measure} from "@/interfaces/Measure";
+    import state from "@/state";
 
     @Component
 export default class ShopAssortment extends Vue {
@@ -95,7 +96,7 @@ export default class ShopAssortment extends Vue {
     isNewItem: boolean = false;
     selectedItemData: TShopItem;
     selectedItemIndex: number;
-    shopName: string = 'dupa';
+    shopName: string;
 
     constructor() {
         super();
@@ -109,7 +110,7 @@ export default class ShopAssortment extends Vue {
             Measure.kg
         ];
         this.selectedItemIndex = 0;
-        this.shopName = (<any>window).getShopName();
+        this.shopName = state.shopName;
         this.selectedItemData = this.createEmptyItem();
         this.shopItems = this.fetchShopItems();
     }
@@ -173,7 +174,7 @@ export default class ShopAssortment extends Vue {
         for (let i = 0; i < 10; i++) {
             const shopItem: TShopItem = {
                 name: 'carrot',
-                shopName: this.shopName,
+                shopName: 'dupa',
                 count: 12,
                 price: 100,
                 availability: Availability.medium,

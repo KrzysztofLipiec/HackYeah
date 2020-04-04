@@ -60,11 +60,7 @@ export default class RegistrationPanel extends Vue {
       })
     ).json();
     state.shopName = user.username;
-      if (!(<any>window).getShopName) {
-          (<any>window).getShopName = () => {
-              return localStorage.getItem("shopName");
-          };
-      }
+    localStorage.setItem("shopName", user.username);
     this.$router.push("BackstageDashboard");
 
     return user;

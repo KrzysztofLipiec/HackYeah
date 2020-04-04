@@ -49,7 +49,16 @@ class Products extends AbstractRouterHandler_1.AbstractRouterHandler {
         }));
     }
     getAllProducts(req, res) {
-        res.json(this.products);
+        const shops = (req.query.shops || '').split(','), search = req.query.search, offset = parseInt(req.query.offset, 10) || 0, limit = parseInt(req.query.limit, 10);
+        let result = this.products.filter((product, index) => {
+            return !shops[0] || (shops.indexOf(product.shopName) >= 0 &&
+                product.name.includes(search));
+        });
+        if (limit) {
+            result.splice(0, offset);
+            result.splice(limit);
+        }
+        res.json(result);
     }
     getData(data) {
         data.products = this.products;

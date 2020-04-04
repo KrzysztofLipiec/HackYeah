@@ -2,9 +2,9 @@ import { Availability } from './Availability';
 import { Measure } from './Measure';
 
 export interface TShopItem {
-    id: string;
+    id?: string;
+    shopName?: string;
     name: string;
-    shopName: string;
     count: number;
     price: number;
     availability: Availability;

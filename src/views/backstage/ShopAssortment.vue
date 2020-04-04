@@ -85,6 +85,7 @@ import {Measure} from "@/interfaces/Measure";
     import {TShopItem} from "@/interfaces/TShopItem";
     import {Measure} from "@/interfaces/Measure";
     import state from "@/state";
+    import {TFetchActions} from "@/interfaces/TFetchActions";
 
     @Component
     export default class ShopAssortment extends Vue {
@@ -122,6 +123,10 @@ import {Measure} from "@/interfaces/Measure";
             this.shopItems = fetchedItems;
         }
 
+        private async createOrUpdateItem(item: TShopItem, action: string): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${action}`, body: JSON.stringify(item)});
+        }
+
         private editItem(): void {
             this.shopItems[this.selectedItemIndex].name = this.selectedItemData.name;
             this.shopItems[this.selectedItemIndex].count = this.selectedItemData.count;
@@ -133,7 +138,6 @@ import {Measure} from "@/interfaces/Measure";
         private createEmptyItem(): TShopItem {
             return {
                 name: '',
-                shopName: '',
                 count: 0,
                 price: 0,
                 measure: Measure.piece,
@@ -165,8 +169,10 @@ import {Measure} from "@/interfaces/Measure";
         public applyChangesInItem(): void {
             if (this.isNewItem) {
                 this.shopItems.push(this.selectedItemData);
+                this.createOrUpdateItem(this.selectedItemData, TFetchActions.POST);
             } else {
                 this.editItem();
+                this.createOrUpdateItem(this.shopItems[this.selectedItemIndex], TFetchActions.PUT);
             }
             this.isNewItem = false;
             this.closeEditModal();

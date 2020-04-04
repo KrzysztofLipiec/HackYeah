@@ -61,7 +61,7 @@
                     <b class="ml-1 item-price__title">Item price</b>
                 </div>
                 <div class="d-flex flex-row-reverse align-content-center">
-                    <b-button class="mr-2" @click="addNewItem" variant="success" size="xs">Add item</b-button>
+                    <b-button class="mr-2" @click="addNewItem" variant="success" size="xs">Add</b-button>
                 </div>
             </b-list-group-item>
             <b-list-group-item class="d-flex justify-content-between items-container" v-for="(item, index) in shopItems">
@@ -129,7 +129,6 @@
         private async fetchShopItems(): Promise<void> {
             const apiResponse: Response = await fetch(`${state.apiUrl}products/${state.shopName}`, {method: "GET"});
             const fetchedItems: TShopItem[] = await apiResponse.json();
-            console.log(fetchedItems);
             this.shopItems = fetchedItems;
         }
 

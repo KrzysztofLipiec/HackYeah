@@ -55,7 +55,7 @@ import {Measure} from "@/interfaces/Measure";
                     <b-button class="mr-2" @click="addNewItem" variant="success" size="xs">Add item</b-button>
                 </div>
             </b-list-group-item>
-            <b-list-group-item class="d-flex justify-content-between" v-for="(item, index) in shopItems">
+            <b-list-group-item class="d-flex justify-content-between items-container" v-for="(item, index) in shopItems">
                 <div class="d-flex align-items-center">
                     <b class="ml-1 item-name">{{item.name}}</b>
                     <b-form-select class="ml-1 item-availability" v-model="item.availability" :options="availabilityOptions"></b-form-select>
@@ -87,104 +87,94 @@ import {Measure} from "@/interfaces/Measure";
     import state from "@/state";
 
     @Component
-export default class ShopAssortment extends Vue {
+    export default class ShopAssortment extends Vue {
 
-    availabilityOptions: Availability[];
-    measureOptions: Measure[];
-    shopItems: TShopItem[];
-    isEditModalOpen: boolean = false;
-    isNewItem: boolean = false;
-    selectedItemData: TShopItem;
-    selectedItemIndex: number;
-    shopName: string;
+        availabilityOptions: Availability[];
+        measureOptions: Measure[];
+        shopItems: TShopItem[] = [];
+        isEditModalOpen: boolean = false;
+        isNewItem: boolean = false;
+        selectedItemData: TShopItem;
+        selectedItemIndex: number;
+        shopName: string;
 
-    constructor() {
-        super();
-        this.availabilityOptions = [
-            Availability.high,
-            Availability.medium,
-            Availability.low,
-        ];
-        this.measureOptions = [
-            Measure.piece,
-            Measure.kg
-        ];
-        this.selectedItemIndex = 0;
-        this.shopName = state.shopName;
-        this.selectedItemData = this.createEmptyItem();
-        this.shopItems = this.fetchShopItems();
-    }
-
-    private createEmptyItem(): TShopItem {
-        return {
-            name: '',
-            shopName: '',
-            count: 0,
-            price: 0,
-            measure: Measure.piece,
-            availability: Availability.low,
-            photo: ''
-        };
-    }
-
-    public addNewItem(): void {
-        this.selectedItemData = this.createEmptyItem();
-        this.isNewItem = true;
-        this.isEditModalOpen = true;
-    }
-
-    public removeItem(index: number): void {
-        this.shopItems.splice(index, 1);
-    }
-
-    public openEditModal(item: TShopItem, index: number) {
-        this.selectedItemData = JSON.parse(JSON.stringify(item));
-        this.selectedItemIndex = index;
-        this.isEditModalOpen = true;
-    }
-
-    public closeEditModal() {
-        this.isEditModalOpen = false;
-    }
-
-    public applyChangesInItem(): void {
-        if (this.isNewItem) {
-            this.shopItems.push(this.selectedItemData);
-        } else {
-            this.editItem();
+        constructor() {
+            super();
+            this.availabilityOptions = [
+                Availability.high,
+                Availability.medium,
+                Availability.low,
+            ];
+            this.measureOptions = [
+                Measure.piece,
+                Measure.kg
+            ];
+            this.selectedItemIndex = 0;
+            this.shopName = state.shopName;
+            this.selectedItemData = this.createEmptyItem();
+            void this.fetchShopItems();
         }
-        this.isNewItem = false;
-        this.closeEditModal();
-    }
 
-    public applyChanges(): void {
-        console.log('save changes');
-    }
+        private async fetchShopItems(): Promise<void> {
+            const apiResponse: Response = await fetch(`${state.apiUrl}products/${state.shopName}`, {method: "GET"});
+            const fetchedItems: TShopItem[] = await apiResponse.json();
+            console.log(fetchedItems);
+            this.shopItems = fetchedItems;
+        }
 
-    private editItem(): void {
-        this.shopItems[this.selectedItemIndex].name = this.selectedItemData.name;
-        this.shopItems[this.selectedItemIndex].count = this.selectedItemData.count;
-        this.shopItems[this.selectedItemIndex].price = this.selectedItemData.price;
-        this.shopItems[this.selectedItemIndex].availability = this.selectedItemData.availability;
-        this.shopItems[this.selectedItemIndex].measure = this.selectedItemData.measure;
-    }
+        private editItem(): void {
+            this.shopItems[this.selectedItemIndex].name = this.selectedItemData.name;
+            this.shopItems[this.selectedItemIndex].count = this.selectedItemData.count;
+            this.shopItems[this.selectedItemIndex].price = this.selectedItemData.price;
+            this.shopItems[this.selectedItemIndex].availability = this.selectedItemData.availability;
+            this.shopItems[this.selectedItemIndex].measure = this.selectedItemData.measure;
+        }
 
-    fetchShopItems(): TShopItem[] {
-        const items: TShopItem[] = [];
-        for (let i = 0; i < 10; i++) {
-            const shopItem: TShopItem = {
-                name: 'carrot',
-                shopName: 'dupa',
-                count: 12,
-                price: 100,
-                availability: Availability.medium,
-                photo: 'https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg',
-                measure: Measure.kg
+        private createEmptyItem(): TShopItem {
+            return {
+                name: '',
+                shopName: '',
+                count: 0,
+                price: 0,
+                measure: Measure.piece,
+                availability: Availability.low,
+                photo: ''
             };
-            items.push(shopItem)
         }
-        return items;
-    }
+
+        public addNewItem(): void {
+            this.selectedItemData = this.createEmptyItem();
+            this.isNewItem = true;
+            this.isEditModalOpen = true;
+        }
+
+        public removeItem(index: number): void {
+            this.shopItems.splice(index, 1);
+        }
+
+        public openEditModal(item: TShopItem, index: number) {
+            this.selectedItemData = JSON.parse(JSON.stringify(item));
+            this.selectedItemIndex = index;
+            this.isEditModalOpen = true;
+        }
+
+        public closeEditModal() {
+            this.isEditModalOpen = false;
+        }
+
+        public applyChangesInItem(): void {
+            if (this.isNewItem) {
+                this.shopItems.push(this.selectedItemData);
+            } else {
+                this.editItem();
+            }
+            this.isNewItem = false;
+            this.closeEditModal();
+        }
+
+        public applyChanges(): void {
+            console.log('save changes');
+        }
 
     }
 </script>

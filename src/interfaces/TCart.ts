@@ -1,5 +1,6 @@
-import { TShopOrder } from './TShopOrder';
+import { TShopItem } from './TShopItem';
 
 export interface TCart {
-    shopOrders: TShopOrder[];
+    items: TShopItem[];
+    pickupTime: number;
 }

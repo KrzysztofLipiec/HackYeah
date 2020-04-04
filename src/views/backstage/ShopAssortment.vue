@@ -122,12 +122,16 @@ import {Measure} from "@/interfaces/Measure";
             this.shopItems = fetchedItems;
         }
 
-        private async createItem(item: TShopItem): Promise<void> {
+        private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
             await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, body: JSON.stringify(item)});
         }
 
-        private async updateItem(item: TShopItem): Promise<void> {
+        private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
             await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, body: JSON.stringify(item)});
+        }
+
+        private async backendProcedureRemoveItem(item: TShopItem): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.DELETE}`});
         }
 
         private editItem(): void {
@@ -156,7 +160,8 @@ import {Measure} from "@/interfaces/Measure";
         }
 
         public removeItem(index: number): void {
-            this.shopItems.splice(index, 1);
+            const removedItem: TShopItem = this.shopItems.splice(index, 1)[0];
+            this.backendProcedureRemoveItem(removedItem)
         }
 
         public openEditModal(item: TShopItem, index: number) {
@@ -172,10 +177,10 @@ import {Measure} from "@/interfaces/Measure";
         public applyChangesInItem(): void {
             if (this.isNewItem) {
                 this.shopItems.push(this.selectedItemData);
-                this.createItem(this.selectedItemData);
+                this.backendProcedureCreateItem(this.selectedItemData);
             } else {
                 this.editItem();
-                this.updateItem(this.shopItems[this.selectedItemIndex]);
+                this.backendProcedureUpdateItem(this.shopItems[this.selectedItemIndex]);
             }
             this.isNewItem = false;
             this.closeEditModal();

@@ -4,7 +4,8 @@
     <router-link to="/about">About</router-link>|
     <router-link to="/registration">Registration</router-link>|
     <router-link to="/orders-list">Orders</router-link>|
-    <router-link to="/backstageDashboard">Dashboard</router-link>
+    <router-link to="/backstageDashboard">Dashboard</router-link>|
+    <router-link to="/shop-assortment">Shop assortment</router-link>
   </div>
 </template>
 <script lang="ts">

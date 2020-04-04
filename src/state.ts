@@ -1,5 +1,10 @@
-let stateDefault = {
+interface State {
+    apiUrl: string;
+}
+
+let stateDefault: State = {
     apiUrl: 'http://localhost:9123/'
 }
 
-export let state = state || stateDefault;
+let state: State | null = null;
+export default state = state || stateDefault;

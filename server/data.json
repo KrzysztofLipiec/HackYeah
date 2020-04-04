@@ -1,5 +1,4 @@
 {
-    "shops": [],
     "favicon.ico": {},
     "itemSuggestions": {
         "0": {
@@ -75,7 +74,7 @@
             ]
         }
     ],
-    "settings": {
+    "shops": {
         "januszShop": {
             "shopName": "januszShop",
             "accountNumber": "123123123123",
@@ -94,96 +93,26 @@
             "username": "januszShop"
         }
     ],
-  "products": [
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    },
-    {
-      "name": "carrot",
-      "shopName": "januszShop",
-      "count": 12,
-      "price": 100,
-      "availability": "medium",
-      "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
-      "measure": "kg"
-    }
-  ]
+    "products": [
+        {
+            "id": "0",
+            "name": "carrot",
+            "shopName": "januszShop",
+            "count": 12,
+            "price": 100,
+            "availability": "medium",
+            "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
+            "measure": "kg"
+        },
+        {
+            "id": "1",
+            "name": "carrot",
+            "shopName": "januszShop",
+            "count": 12,
+            "price": 100,
+            "availability": "medium",
+            "photo": "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg",
+            "measure": "kg"
+        }
+    ]
 }

@@ -20,19 +20,25 @@ class Products extends AbstractRouterHandler_1.AbstractRouterHandler {
         if (item) {
             let index = this.products.indexOf(item);
             this.products[index] = req.body;
+            res.json(this.products[index]);
+        }
+        else {
+            res.status(404).send('not found');
         }
     }
     removeProduct(req, res) {
-        let itemIndex = this.products.indexOf(this._getProduct(req.params.id));
+        const product = this._getProduct(req.params.productId), itemIndex = this.products.indexOf(product);
         if (itemIndex >= 0) {
             this.products.splice(itemIndex, 1);
         }
+        res.json(product);
     }
     addProduct(req, res) {
         let product = req.body;
-        product.id = this.products.length.toString();
+        product.id = AbstractRouterHandler_1.AbstractRouterHandler.getGuid();
         product.shopName = req.params.shopName;
         this.products.push(product);
+        res.json(product);
     }
     getProduct(req, res) {
         res.json(this._getProduct(req.params.productId));

@@ -37,8 +37,8 @@ class App {
         ];
 
         this.setHeaders();
-        this.setFileSaver();
         this.setRouters();
+        this.setFileSaver();
         this.listen();
     }
 
@@ -62,17 +62,30 @@ class App {
                 res.setHeader('Access-Control-Allow-Headers', '*');
             }
             res.setHeader('Access-Control-Allow-Origin', '*');
-            res.setHeader('Access-Control-Allow-Method', 'GET');
+            res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
             next();
         });
     }
 
+    private save(): void {
+        this.routerHandlers.forEach((routerHandler: AbstractRouterHandler) => {
+            routerHandler.getData(this.data);
+        });
+        fs.writeFileSync(this.dataFilePath, JSON.stringify(this.data, null, 2));
+
+    }
     private setFileSaver(): void {
         this.app.post('*', (req, res, next) => {
-            this.routerHandlers.forEach((routerHandler: AbstractRouterHandler) => {
-                routerHandler.getData(this.data);
-            });
-            fs.writeFileSync(this.dataFilePath, JSON.stringify(this.data, null, 2));
+            this.save();
+            next();
+        });
+        this.app.delete('*', (req, res, next) => {
+            this.save();
+            next();
+        });
+
+        this.app.put('*', (req, res, next) => {
+            this.save();
             next();
         });
         this.app.get('/', (req, res, next) => {

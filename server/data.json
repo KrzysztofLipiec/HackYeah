@@ -27,7 +27,7 @@
             "id": "0",
             "name": "seba",
             "shopPhoto": "https://ocs-pl.oktawave.com/v1/AUTH_2887234e-384a-4873-8bc5-405211db13a2/spidersweb/2020/04/biedronka-godziny-otwarcia-1180x541.jpg",
-            "timestamp": 1585996299130,
+            "pickupTime": 1585996299130,
             "items": [
                 {
                     "shopName": "januszShop",
@@ -52,7 +52,7 @@
         {
             "id": "1",
             "name": "seba",
-            "timestamp": 1585996299130,
+            "pickupTime": 1585996299130,
             "shopPhoto": "https://ocs-pl.oktawave.com/v1/AUTH_2887234e-384a-4873-8bc5-405211db13a2/spidersweb/2020/04/biedronka-godziny-otwarcia-1180x541.jpg",
             "items": [
                 {

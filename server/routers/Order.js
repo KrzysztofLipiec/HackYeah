@@ -1,15 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const OrderStatus_1 = require("../interfaces/OrderStatus");
 const AbstractRouterHandler_1 = require("./AbstractRouterHandler");
 class Orders extends AbstractRouterHandler_1.AbstractRouterHandler {
     constructor(orders = []) {
         super();
         this.orders = orders;
-        this.router.route('/orders').get(this.getAllOrders.bind(this));
-        this.router.route('/orders/shop/:shopName').get(this.getOrders.bind(this));
-        this.router.route('/orders/user/:userName').get(this.getUserOrders.bind(this));
-        this.router.route('/orders/:id').get(this.getOrderById.bind(this));
-        this.router.route('/orders/:id/:status').post(this.setOrderReady.bind(this));
+        this.router.route('/orders')
+            .get(this.getAllOrders.bind(this))
+            .post(this.addOrder.bind(this));
+        this.router.route('/orders/shop/:shopName')
+            .get(this.getOrders.bind(this));
+        this.router.route('/orders/user/:userName')
+            .get(this.getUserOrders.bind(this));
+        this.router.route('/orders/:id')
+            .get(this.getOrderById.bind(this));
+        this.router.route('/orders/:id/:status')
+            .post(this.setOrderReady.bind(this));
+    }
+    addOrder(req, res) {
+        let order = req.body;
+        order.id = AbstractRouterHandler_1.AbstractRouterHandler.getGuid();
+        order.status = OrderStatus_1.OrderStatus.waiting;
+        this.orders.push(order);
+        res.json(order);
     }
     setOrderReady(req, res) {
         this._getOrderById(req.params.id).status = req.params.status;

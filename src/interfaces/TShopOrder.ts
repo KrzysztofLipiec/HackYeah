@@ -8,5 +8,5 @@ export interface TShopOrder {
     name: string;
     shopPhoto: string;
     items: TShopItem[];
-    timestamp: number;
+    pickupTime: number;
 }

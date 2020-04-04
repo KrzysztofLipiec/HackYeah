@@ -24,22 +24,28 @@ export class Products extends AbstractRouterHandler {
         if (item) {
             let index = this.products.indexOf(item);
             this.products[index] = req.body;
+            res.json(this.products[index]);
+        } else {
+            res.status(404).send('not found');
         }
 
     }
 
     private removeProduct(req: Request, res: Response): void {
-        let itemIndex = this.products.indexOf(this._getProduct(req.params.id));
+        const product = this._getProduct(req.params.productId),
+            itemIndex = this.products.indexOf(product);
         if (itemIndex >= 0) {
             this.products.splice(itemIndex, 1);
         }
+        res.json(product);
     }
 
     private addProduct(req: Request, res: Response): void {
         let product = req.body as TShopItem;
-        product.id = this.products.length.toString();
+        product.id = AbstractRouterHandler.getGuid();
         product.shopName = req.params.shopName;
         this.products.push(product);
+        res.json(product);
     }
 
     private getProduct(req: Request, res: Response): void {

@@ -15,6 +15,8 @@ export class Orders extends AbstractRouterHandler {
             .post(this.addOrder.bind(this));
         this.router.route('/orders/shop/:shopName')
             .get(this.getOrders.bind(this));
+        this.router.route('/orders/shop/:shopName/:orderId')
+            .get(this.getOrderByShop.bind(this))
         this.router.route('/orders/user/:userName')
             .get(this.getUserOrders.bind(this));
         this.router.route('/orders/:id')
@@ -32,7 +34,12 @@ export class Orders extends AbstractRouterHandler {
     }
 
     private setOrderReady(req: Request, res: Response): void {
-        this._getOrderById(req.params.id).status = req.params.status as OrderStatus;
+        const order = this._getOrderById(req.params.id);
+        order.status = req.params.status as OrderStatus;
+        if (req.params.status === OrderStatus.incomplete) {
+            let missingItemIndex = order.items.findIndex((item) => item.id === req.body.id);
+            order.items.splice(missingItemIndex, 1);
+        }
         res.json({ success: true });
     }
 
@@ -50,6 +57,16 @@ export class Orders extends AbstractRouterHandler {
         }))
     }
 
+    private getOrderByShop(req: Request, res: Response): void {
+        const shop = req.params.shopName,
+            orderId = req.params.orderId,
+            order = this._getOrderById(orderId),
+            result: TShopOrder = {
+                ...order, items: order.items.filter((item: TShopItem) => item.shopName === shop)
+            };
+        res.json(result);
+
+    }
     private getOrders(req: Request, res: Response): void {
         let orders: Array<TShopOrder> = [];
 

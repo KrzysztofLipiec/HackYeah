@@ -11,6 +11,8 @@ class Orders extends AbstractRouterHandler_1.AbstractRouterHandler {
             .post(this.addOrder.bind(this));
         this.router.route('/orders/shop/:shopName')
             .get(this.getOrders.bind(this));
+        this.router.route('/orders/shop/:shopName/:orderId')
+            .get(this.getOrderByShop.bind(this));
         this.router.route('/orders/user/:userName')
             .get(this.getUserOrders.bind(this));
         this.router.route('/orders/:id')
@@ -26,7 +28,12 @@ class Orders extends AbstractRouterHandler_1.AbstractRouterHandler {
         res.json(order);
     }
     setOrderReady(req, res) {
-        this._getOrderById(req.params.id).status = req.params.status;
+        const order = this._getOrderById(req.params.id);
+        order.status = req.params.status;
+        if (req.params.status === OrderStatus_1.OrderStatus.incomplete) {
+            let missingItemIndex = order.items.findIndex((item) => item.id === req.body.id);
+            order.items.splice(missingItemIndex, 1);
+        }
         res.json({ success: true });
     }
     _getOrderById(id) {
@@ -39,6 +46,10 @@ class Orders extends AbstractRouterHandler_1.AbstractRouterHandler {
         res.json(this.orders.filter((order) => {
             return req.params.userName === order.name;
         }));
+    }
+    getOrderByShop(req, res) {
+        const shop = req.params.shopName, orderId = req.params.orderId, order = this._getOrderById(orderId), result = Object.assign(Object.assign({}, order), { items: order.items.filter((item) => item.shopName === shop) });
+        res.json(result);
     }
     getOrders(req, res) {
         let orders = [];

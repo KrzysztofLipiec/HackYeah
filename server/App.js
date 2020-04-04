@@ -8,7 +8,6 @@ const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
 const Authentication_1 = require("./routers/Authentication");
 const Generic_1 = require("./routers/Generic");
-const MapRouter_1 = require("./routers/MapRouter");
 const Order_1 = require("./routers/Order");
 const Products_1 = require("./routers/Products");
 class App {
@@ -30,7 +29,7 @@ class App {
         this.app.use(body_parser_1.default());
         this.routerHandlers = [
             new Authentication_1.Authentication(this.data.shops),
-            new MapRouter_1.MapRouter(),
+            // new MapRouter(),
             new Order_1.Orders(this.data.orders),
             new Products_1.Products(this.data.products),
             new Generic_1.Generic(this.data)

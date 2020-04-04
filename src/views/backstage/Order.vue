@@ -44,6 +44,7 @@ import { Vue, Component } from "vue-property-decorator";
 import { TShopOrder } from "../../interfaces/TShopOrder";
 import state from "../../state";
 import { TShopItem } from "@/interfaces/TShopItem";
+import { OrderStatus } from "../../interfaces/OrderStatus";
 @Component({})
 export default class ShopOrder extends Vue {
   private items: Array<TShopItem> = [];
@@ -52,11 +53,17 @@ export default class ShopOrder extends Vue {
     this.getOrder();
   }
 
-  public reportNoGoods(): void {
-    fetch(`${state.apiUrl}orders/${this.$route.params.orderId}/ready`, {
-      method: "post"
-    }).then((res: Response) => {
-      this.$router.push("/backstageDashboard");
+  public reportNoGoods(item: TShopItem): void {
+    fetch(
+      `${state.apiUrl}orders/${this.$route.params.orderId}/${OrderStatus.incomplete}`,
+      {
+        body: JSON.stringify(item),
+        headers: { "content-type": "application/json" },
+        method: "post"
+      }
+    ).then((res: Response) => {
+      const index = this.items.indexOf(item);
+      this.items.splice(index, 1);
     });
   }
 
@@ -65,16 +72,21 @@ export default class ShopOrder extends Vue {
   }
 
   public applyChanges(): void {
-    fetch(`${state.apiUrl}orders/${this.$route.params.orderId}/ready`, {
-      method: "post"
-    }).then((res: Response) => {
+    fetch(
+      `${state.apiUrl}orders/${this.$route.params.orderId}/${OrderStatus.ready}`,
+      {
+        method: "post"
+      }
+    ).then((res: Response) => {
       this.$router.push("/backstageDashboard");
     });
   }
 
   private async getOrder(): Promise<void> {
     const order = await (
-      await fetch(`${state.apiUrl}orders/${this.$route.params.orderId}`)
+      await fetch(
+        `${state.apiUrl}orders/shop/${state.shopName}/${this.$route.params.orderId}`
+      )
     ).json();
     this.items = order.items;
   }

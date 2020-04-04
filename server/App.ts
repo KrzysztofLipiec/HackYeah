@@ -7,7 +7,6 @@ import { IData } from './interfaces/IData';
 import { AbstractRouterHandler } from './routers/AbstractRouterHandler';
 import { Authentication } from './routers/Authentication';
 import { Generic } from './routers/Generic';
-import { MapRouter } from './routers/MapRouter';
 import { Orders } from './routers/Order';
 import { Products } from './routers/Products';
 
@@ -28,7 +27,7 @@ class App {
         this.app.use(bodyParser());
         this.routerHandlers = [
             new Authentication(this.data.shops),
-            new MapRouter(),
+            // new MapRouter(),
             new Orders(this.data.orders),
             new Products(this.data.products),
             new Generic(this.data)

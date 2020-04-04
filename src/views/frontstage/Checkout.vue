@@ -40,6 +40,7 @@ import state from "../../state";
 import { TShopItem } from "../../interfaces/TShopItem";
 import CartSummary from "../../components/frontstage/CartSummary.vue";
 import { PaymentMethodType } from "@/interfaces/PaymentMethodType";
+import { TFetchActions } from "../../interfaces/TFetchActions";
 @Component({
   components: {
     CartSummary
@@ -64,9 +65,15 @@ export default class Checkout extends Vue {
   public onSubmit(e: Event) {
     e.preventDefault();
     this.isPending = true;
+    const payload: any = {
+      name: state.userName,
+      pickupTime: state.cart.pickupTime,
+      items: state.cart.items
+    };
     void fetch(`${state.apiUrl}orders`, {
-      body: JSON.stringify(state.cart),
-      method: "POST"
+      body: JSON.stringify(payload),
+      method: TFetchActions.POST,
+      headers: { "content-type": "application/json" }
     }).then(() => {
       alert("OK");
       this.isPending = false;

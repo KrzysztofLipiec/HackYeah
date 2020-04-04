@@ -12,8 +12,8 @@
             <td class="text-left">{{ item.name }}</td>
             <td
               class="text-left"
-            >{{ item.amount}}x{{ formatCurrency(item.price)}} per {{item.measure}}</td>
-            <td class="text-right">{{formatCurrency(item.amount * item.price)}}</td>
+            >{{ item.count}}x{{ formatCurrency(item.price)}} per {{item.measure}}</td>
+            <td class="text-right">{{formatCurrency(item.count * item.price)}}</td>
           </tr>
         </tbody>
       </table>

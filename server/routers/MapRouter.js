@@ -4,12 +4,12 @@ const AbstractRouterHandler_1 = require("./AbstractRouterHandler");
 class MapRouter extends AbstractRouterHandler_1.AbstractRouterHandler {
     constructor() {
         super();
-        this.router.route('/map/:lat/:lng/:count').get(this.getNearestRestaurants.bind(this));
+        this.router.route('/map/:lat/:lng/:count').get(this.getNearestShops.bind(this));
     }
     getData() {
         return null;
     }
-    getNearestRestaurants(req, res) {
+    getNearestShops(req, res) {
         const lat = parseFloat(req.params['lat']);
         const lng = parseFloat(req.params['lng']);
         const count = parseInt(req.params['count']);

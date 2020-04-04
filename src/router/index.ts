@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Shops from '../views/Shops.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+
+import Home from '../views/Home.vue';
+import Shops from '../views/Shops.vue';
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/shops',
     name: 'Shops',
     component: Shops
+  },
+  {
+    path: '/backstageDashboard',
+    name: 'BackstageDashboard',
+    component: () => import('../views/Backstage-dashboard.vue')
   },
   {
     path: '/registration',

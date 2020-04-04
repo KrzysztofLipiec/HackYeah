@@ -2,7 +2,7 @@
   <div id="map" style="height: 400px"></div>
 </template>
 <script>
-import { state } from "../state";
+import state from "../state";
 const defaultZoom = 14;
 export default {
   mounted: function() {

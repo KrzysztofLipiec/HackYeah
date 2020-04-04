@@ -1,5 +1,6 @@
 let stateDefault = {
     apiUrl: 'http://localhost:9123/'
 }
+let state = null;
 
-export let state = state || stateDefault;
+export default state = state || stateDefault;

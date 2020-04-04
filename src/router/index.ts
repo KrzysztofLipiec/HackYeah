@@ -2,15 +2,17 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Shops from '../views/frontstage/Shops.vue';
-import Home from '../views/LandingPage.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'LandingPage',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/LandingPage.vue')
   },
   {
     path: '/shops',
@@ -38,12 +40,12 @@ const routes = [
     component: () => import('../views/backstage/Order.vue')
   },
   {
-    path: '/registration',
-    name: 'Registration',
+    path: '/login',
+    name: 'Login',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/backstage/RegistrationPanel.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/backstage/LoginPanel.vue')
   },
   {
     path: '/orders-list',

@@ -19,7 +19,7 @@ export default {
     generateUserId() {
       let userName = "seba";
       if (!localStorage.getItem("shopName")) {
-        this.$router.replace("registration");
+        this.$router.replace("/");
       }
       state.userName = userName;
       state.shopName = localStorage.getItem("shopName");

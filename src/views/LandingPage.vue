@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="LandingPage">
     <b-container>
       <b-jumbotron>
         <template v-slot:header>GroceriesApp</template>
@@ -11,17 +11,13 @@
         <p>Browse through variety of products in local shops, select convenient pickup time, pay safely online.</p>
 
         <b-button variant="success" size="lg" to="/shops">Start buying</b-button>&nbsp;
-        <b-button variant="light" size="lg" href="#">Do Something Else</b-button>
+        <b-button variant="light" size="lg" to="/login">Shop to your login</b-button>
       </b-jumbotron>
     </b-container>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
   name: "LandingPage",
   components: {

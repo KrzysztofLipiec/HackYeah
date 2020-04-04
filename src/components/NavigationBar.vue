@@ -1,10 +1,9 @@
 <template>
     <div id="nav" class="d-flex justify-content-around">
         <router-link to="/">Home</router-link>
-        <router-link to="/registration">Registration</router-link>
-        <router-link to="/orders-list">Orders</router-link>
-        <router-link to="/backstageDashboard">Dashboard</router-link>
-        <router-link to="/shop-assortment">Assortment</router-link>
+        <router-link v-show="!isDealer" to="/orders-list">Orders</router-link>
+        <router-link v-show="isDealer" to="/backstageDashboard">Dashboard</router-link>
+        <router-link v-show="isDealer" to="/shop-assortment">Assortment</router-link>
     </div>
 </template>
 
@@ -13,7 +12,13 @@
 
     @Component
     export default class NavigationBar extends Vue {
+        public isDealer(): boolean {
+            return window.localStorage && !!window.localStorage.getItem('shopName');
+        }
 
+        public isClientAnd(): boolean {
+            return window.localStorage && !!window.localStorage.getItem('shopName');
+        }
     }
 </script>
 

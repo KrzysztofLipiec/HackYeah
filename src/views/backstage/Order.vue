@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <h2>Order</h2>
     <b-list-group class="m-3">
       <b-list-group-item class="d-flex justify-content-between assortment-header" variant="secondary">
         <div class="d-flex align-items-center">
@@ -31,14 +33,15 @@
         </div>
       </b-list-group-item>
     </b-list-group>
+  </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { TShopOrder } from "../../interfaces/TShopOrder";
-import state from "../../state";
-import { TShopItem } from "@/interfaces/TShopItem";
-import { OrderStatus } from "../../interfaces/OrderStatus";
-@Component({})
+  import {Component, Vue} from "vue-property-decorator";
+  import state from "../../state";
+  import {TShopItem} from "@/interfaces/TShopItem";
+  import {OrderStatus} from "../../interfaces/OrderStatus";
+
+  @Component({})
 export default class ShopOrder extends Vue {
   private items: Array<TShopItem> = [];
 

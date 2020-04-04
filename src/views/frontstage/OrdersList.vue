@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Your orders</h1>
-
+    <h2>Your orders</h2>
     <ul class="d-flex align-content-center flex-wrap justify-content-around" fluid="md">
       <li v-for="order in orders">
         <b-card

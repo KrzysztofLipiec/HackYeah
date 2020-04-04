@@ -35,8 +35,8 @@ class App {
             new Generic_1.Generic(this.data)
         ];
         this.setHeaders();
-        this.setRouters();
         this.setFileSaver();
+        this.setRouters();
         this.listen();
     }
     setRouters() {
@@ -49,7 +49,7 @@ class App {
             const allowedOrigins = [
                 `http://localhost:${this.appPort}`,
                 `http://127.0.0.1:${this.appPort}`,
-                `https://hyfront.dev.zbic.in:${this.appPort}`
+                `https://hyfront.dev.zbic.in`
             ], origin = req.headers.origin;
             if (allowedOrigins.indexOf(origin) > -1) {
                 res.setHeader('Access-Control-Allow-Origin', origin);

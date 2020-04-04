@@ -20,14 +20,23 @@
 <style scoped>
     #nav {
         padding: 20px 10px;
+        background-color: var(--primary-color);
+        box-shadow: 0 1px 3px 3px rgba(0,0,0,0.73);
+        margin-bottom: 50px;
     }
 
     #nav a {
         font-weight: bold;
-        color: #2c3e50;
+        text-decoration: none;
+        color: var(--text-on-primary);
+        transition: color 0.2s ease-in-out;
+    }
+
+    #nav a:hover {
+        color: var(--secondary-color);
     }
 
     #nav a.router-link-exact-active {
-        color: #42b983;
+        color: var(--secondary-color);
     }
 </style>

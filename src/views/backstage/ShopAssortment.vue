@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Shop Assortment</h1>
     <b-modal v-model="isEditModalOpen" hide-footer title="Edit item">
       <b-form>
         <b-form-group label="Name:" label-for="name">
@@ -63,14 +62,15 @@
         </div>
       </b-form>
     </b-modal>
-    <b-list-group>
-      <b-list-group-item class="d-flex justify-content-between" variant="secondary">
+    <h2>Assortment</h2>
+    <b-list-group class="m-3">
+      <b-list-group-item class="d-flex justify-content-between assortment-header" variant="secondary">
         <div class="d-flex align-items-center">
           <b class="ml-1 item-name__title">Name</b>
           <b class="ml-1 item-availability__title">Availability</b>
           <b class="ml-1 item-price__title">Price</b>
         </div>
-        <div class="d-flex flex-row-reverse align-content-center">
+        <div class="d-flex flex-row-reverse align-content-center add-item--button">
           <b-button class="mr-2" @click="addNewItem" variant="success" size="xs">Add</b-button>
         </div>
       </b-list-group-item>
@@ -133,6 +133,19 @@ export default class ShopAssortment extends Vue {
     void this.fetchShopItems();
   }
 
+  private parseToValidTShopItem(item: TShopItem): TShopItem {
+    return {
+      id: item.id,
+      shopName: item.shopName,
+      name: item.name,
+      count: parseInt(item.count.toString()),
+      price: parseFloat(item.price.toString()),
+      availability: item.availability,
+      photo: item.photo,
+      measure: item.measure
+    };
+  }
+
   private async fetchShopItems(): Promise<void> {
     const apiResponse: Response = await fetch(
       `${state.apiUrl}products/${state.shopName}`,
@@ -143,18 +156,20 @@ export default class ShopAssortment extends Vue {
   }
 
   private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
+    const validItem: TShopItem = this.parseToValidTShopItem(item);
     await fetch(`${state.apiUrl}products/${state.shopName}`, {
       method: `${TFetchActions.POST}`,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(item)
+      body: JSON.stringify(validItem)
     });
   }
 
   private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
+    const validItem: TShopItem = this.parseToValidTShopItem(item);
     await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {
       method: `${TFetchActions.PUT}`,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(item)
+      body: JSON.stringify(validItem)
     });
   }
 
@@ -231,6 +246,20 @@ export default class ShopAssortment extends Vue {
 <style>
 b {
   text-align: left;
+}
+.assortment-header {
+  background-color: var(--primary-color-light);
+  color: var(--text-on-primary);
+}
+.btn-success {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--text-on-secondary);
+  transition: background-color 0.2s ease-in-out;
+}
+.btn-success:hover {
+  background-color: var(--secondary-color-light);
+  color: var(--text-on-secondary);
 }
 .icon {
   cursor: pointer;

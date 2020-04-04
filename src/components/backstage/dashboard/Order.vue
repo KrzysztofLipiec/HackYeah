@@ -34,7 +34,7 @@ export default class Order extends Vue {
   }
   private async getOrders(): Promise<void> {
     this.orders = await (
-      await fetch(`${state.apiUrl}orders/${state.userName}`)
+      await fetch(`${state.apiUrl}orders/shop/${state.shopName}`)
     ).json();
   }
   public destroyed(): void {

@@ -68,7 +68,7 @@ export default class Settings extends Vue {
     this.getSettings();
   }
   private async getSettings(): Promise<void> {
-    fetch(`${state.apiUrl}settings/${state.userName}`)
+    fetch(`${state.apiUrl}settings/${state.shopName}`)
       .then((response: Response) => {
         return response.json();
       })

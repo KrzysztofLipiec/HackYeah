@@ -17,12 +17,12 @@ export default {
   },
   methods: {
     generateUserId() {
-      let userName = "januszShop";
-      if (!localStorage.getItem("hackYeahUserID")) {
-        localStorage.setItem("hackYeahUserID", userName);
+      let userName = "seba";
+      if (!localStorage.getItem("shopName")) {
+        this.$router.replace("registration");
       }
-
       state.userName = userName;
+      state.shopName = localStorage.getItem("shopName");
     },
     bootstrapStore() {
       if (!window.getUSerId) {

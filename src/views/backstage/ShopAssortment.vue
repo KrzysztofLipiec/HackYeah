@@ -33,6 +33,20 @@
                 <b-form-group label="Measure:" label-for="measure">
                     <b-form-select v-model="selectedItemData.measure" :options="measureOptions"></b-form-select>
                 </b-form-group>
+                <b-form-group label="Photo:" label-for="photo">
+                    <b-form-input
+                            v-model="selectedItemData.photo"
+                            type="text"
+                            required
+                            placeholder="Enter photo url"
+                    ></b-form-input>
+                </b-form-group>
+                <div>
+                    <b-form-group label="Photo preview:" label-for="picture">
+                        <b-img-lazy v-show="isValidUrl(selectedItemData.photo)" :src="selectedItemData.photo" style="max-width: 100%" alt="Photo photo"></b-img-lazy>
+                        <b-img-lazy v-show="!isValidUrl(selectedItemData.photo)" src="https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png" style="max-width: 100%" alt="Photo default photo"></b-img-lazy>
+                    </b-form-group>
+                </div>
                 <div class="d-flex flex-row-reverse">
                     <b-button class="ml-2" variant="primary" @click="applyChangesInItem">Apply</b-button>
                     <b-button variant="primary" @click="closeEditModal">Close</b-button>
@@ -62,10 +76,11 @@
                     ></b-form-input>
                 </div>
                 <div class="d-flex align-items-center">
-                    <div class="mr-5 icon" @click="removeItem(index)">
+                    <div class="mr-2 icon" @click="removeItem(index)">
                         <b-icon-trash></b-icon-trash>
                     </div>
-                    <div class="mr-5 icon" @click="openEditModal(item, index)">
+                    |
+                    <div class="mr-2 ml-2 icon" @click="openEditModal(item, index)">
                         <b-icon-pencil></b-icon-pencil>
                     </div>
                 </div>
@@ -180,6 +195,11 @@
             }
             this.isNewItem = false;
             this.closeEditModal();
+        }
+
+        public isValidUrl(photoUrl: string): boolean{
+            const checkUrl: RegExp = new RegExp('(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\\.(?:jpg|gif|png))(?:\\?([^#]*))?(?:#(.*))?');
+            return checkUrl.test(photoUrl);
         }
 
     }

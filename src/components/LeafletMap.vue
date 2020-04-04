@@ -56,11 +56,15 @@ export default class LeafletMap extends Vue {
       attribution:
         'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
     });
-    this.map.locate({ setView: true, maxZoom: defaultZoom });
+    //this.map.locate({ setView: true, maxZoom: defaultZoom });
     this.map.on("locationfound", this.onLocationFound.bind(this));
 
     this.map.on("moveend", () => {});
     this.map.setView({ lat: 51.759247, lng: 19.455982 }, defaultZoom);
+    this.clearStores();
+    this.getStores({ lat: 51.759247, lng: 19.455982 }).then(stores => {
+      this.drawStores(Object.values(stores));
+    });
     this.map.addLayer(osm);
   }
 

@@ -13,6 +13,7 @@ class Orders extends AbstractRouterHandler_1.AbstractRouterHandler {
     }
     setOrderReady(req, res) {
         this._getOrderById(req.params.id).status = req.params.status;
+        res.json({ success: true });
     }
     _getOrderById(id) {
         return this.orders.find(order => order.id === id);

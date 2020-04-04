@@ -9,6 +9,7 @@ const fs_1 = __importDefault(require("fs"));
 const Authentication_1 = require("./routers/Authentication");
 const Generic_1 = require("./routers/Generic");
 const MapRouter_1 = require("./routers/MapRouter");
+const Order_1 = require("./routers/Order");
 class App {
     constructor(port, dataFilePath, appPort) {
         this.port = port;
@@ -20,6 +21,8 @@ class App {
         }
         catch (error) {
             this.data = {
+                orders: [],
+                products: [],
                 shops: [],
                 users: []
             };
@@ -28,6 +31,7 @@ class App {
         this.routerHandlers = [
             new Authentication_1.Authentication(this.data.users),
             new MapRouter_1.MapRouter(),
+            new Order_1.Orders(this.data.orders),
             new Generic_1.Generic(this.data)
         ];
         this.setHeaders();

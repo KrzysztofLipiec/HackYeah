@@ -54,11 +54,13 @@ export default class RegistrationPanel extends Vue {
   }
 
   async login(): Promise<unknown> {
-    let user = (
+    let user = await (
       await fetch(`${state.apiUrl}auth`, {
         method: "POST"
       })
     ).json();
+    state.shopName = user.username;
+    localStorage.setItem("shopName", user.username);
     this.$router.push("BackstageDashboard");
 
     return user;

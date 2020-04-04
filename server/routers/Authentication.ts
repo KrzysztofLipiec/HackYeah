@@ -10,7 +10,7 @@ export class Authentication extends AbstractRouterHandler {
         super();
         if (!this.users.length) {
             this.users.push({
-                username: 'testUser'
+                username: 'januszShop'
             });
         }
         this.router.route('/auth')

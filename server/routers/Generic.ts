@@ -23,10 +23,14 @@ export class Generic extends AbstractRouterHandler {
             object[part] = object[part] || {};
             if (!path.length) {
                 if (data) {
-                    for (let key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            (object[part] as { [key: string]: unknown })[key] = data[key] || undefined;
+                    if (typeof data === 'object' && !Array.isArray(data)) {
+                        for (let key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                (object[part] as { [key: string]: unknown })[key] = data[key] || undefined;
+                            }
                         }
+                    } else {
+                        object[part] = data;
                     }
                 }
                 return object[part];

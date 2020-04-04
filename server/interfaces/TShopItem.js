@@ -1,3 +1,3 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=IData.js.map
+//# sourceMappingURL=TShopItem.js.map

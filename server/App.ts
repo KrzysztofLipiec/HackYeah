@@ -8,6 +8,7 @@ import { AbstractRouterHandler } from './routers/AbstractRouterHandler';
 import { Authentication } from './routers/Authentication';
 import { Generic } from './routers/Generic';
 import { MapRouter } from './routers/MapRouter';
+import { Orders } from './routers/Order';
 
 class App {
     private app = express();
@@ -18,14 +19,18 @@ class App {
             this.data = JSON.parse(fs.readFileSync(this.dataFilePath, { encoding: 'utf8' }));
         } catch (error) {
             this.data = {
+                orders: [],
+                products: [],
                 shops: [],
                 users: []
+
             };
         }
         this.app.use(bodyParser());
         this.routerHandlers = [
             new Authentication(this.data.users),
             new MapRouter(),
+            new Orders(this.data.orders),
             new Generic(this.data)
         ];
 

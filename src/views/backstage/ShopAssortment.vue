@@ -1,7 +1,3 @@
-import {Measure} from "@/interfaces/Measure";
-import {Measure} from "@/interfaces/Measure";
-import {Availability} from "@/interfaces/Availability";
-import {Measure} from "@/interfaces/Measure";
 <template>
     <div>
         <h1>Shop Assortment</h1>
@@ -37,6 +33,20 @@ import {Measure} from "@/interfaces/Measure";
                 <b-form-group label="Measure:" label-for="measure">
                     <b-form-select v-model="selectedItemData.measure" :options="measureOptions"></b-form-select>
                 </b-form-group>
+                <b-form-group label="Photo:" label-for="photo">
+                    <b-form-input
+                            v-model="selectedItemData.photo"
+                            type="text"
+                            required
+                            placeholder="Enter photo url"
+                    ></b-form-input>
+                </b-form-group>
+                <div>
+                    <b-form-group label="Photo preview:" label-for="picture">
+                        <b-img-lazy v-show="isValidUrl(selectedItemData.photo)" :src="selectedItemData.photo" style="max-width: 100%" alt="Photo photo"></b-img-lazy>
+                        <b-img-lazy v-show="!isValidUrl(selectedItemData.photo)" src="https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png" style="max-width: 100%" alt="Photo default photo"></b-img-lazy>
+                    </b-form-group>
+                </div>
                 <div class="d-flex flex-row-reverse">
                     <b-button class="ml-2" variant="primary" @click="applyChangesInItem">Apply</b-button>
                     <b-button variant="primary" @click="closeEditModal">Close</b-button>
@@ -66,10 +76,11 @@ import {Measure} from "@/interfaces/Measure";
                     ></b-form-input>
                 </div>
                 <div class="d-flex align-items-center">
-                    <div class="mr-5 icon" @click="removeItem(index)">
+                    <div class="mr-2 icon" @click="removeItem(index)">
                         <b-icon-trash></b-icon-trash>
                     </div>
-                    <div class="mr-5 icon" @click="openEditModal(item, index)">
+                    |
+                    <div class="mr-2 ml-2 icon" @click="openEditModal(item, index)">
                         <b-icon-pencil></b-icon-pencil>
                     </div>
                 </div>
@@ -122,12 +133,16 @@ import {Measure} from "@/interfaces/Measure";
             this.shopItems = fetchedItems;
         }
 
-        private async createItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, body: JSON.stringify(item)});
+        private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, headers: {'content-type': 'application/json'},  body: JSON.stringify(item)});
         }
 
-        private async updateItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, body: JSON.stringify(item)});
+        private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, headers: {'content-type': 'application/json'}, body: JSON.stringify(item)});
+        }
+
+        private async backendProcedureRemoveItem(item: TShopItem): Promise<void> {
+            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.DELETE}`});
         }
 
         private editItem(): void {
@@ -156,7 +171,8 @@ import {Measure} from "@/interfaces/Measure";
         }
 
         public removeItem(index: number): void {
-            this.shopItems.splice(index, 1);
+            const removedItem: TShopItem = this.shopItems.splice(index, 1)[0];
+            this.backendProcedureRemoveItem(removedItem)
         }
 
         public openEditModal(item: TShopItem, index: number) {
@@ -172,13 +188,18 @@ import {Measure} from "@/interfaces/Measure";
         public applyChangesInItem(): void {
             if (this.isNewItem) {
                 this.shopItems.push(this.selectedItemData);
-                this.createItem(this.selectedItemData);
+                this.backendProcedureCreateItem(this.selectedItemData);
             } else {
                 this.editItem();
-                this.updateItem(this.shopItems[this.selectedItemIndex]);
+                this.backendProcedureUpdateItem(this.shopItems[this.selectedItemIndex]);
             }
             this.isNewItem = false;
             this.closeEditModal();
+        }
+
+        public isValidUrl(photoUrl: string): boolean{
+            const checkUrl: RegExp = new RegExp('(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\\.(?:jpg|gif|png))(?:\\?([^#]*))?(?:#(.*))?');
+            return checkUrl.test(photoUrl);
         }
 
     }

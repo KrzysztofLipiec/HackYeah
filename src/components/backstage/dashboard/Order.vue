@@ -17,7 +17,7 @@
           >
             <span>{{order.name}}</span>
             <span>{{order.status}}</span>
-            <span>{{(new Date(order.timestamp)).toLocaleTimeString()}}</span>
+            <span>{{(new Date(order.pickupTime)).toLocaleTimeString()}}</span>
           </b-list-group-item>
         </b-list-group>
       </b-col>

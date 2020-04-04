@@ -65,6 +65,7 @@
             state.shopName = user.shopName;
             localStorage.setItem("shopName", user.shopName);
             this.$router.push("BackstageDashboard");
+            this.$root.$emit('refresh-force');
             return user;
         }
     }

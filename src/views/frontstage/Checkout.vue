@@ -74,10 +74,16 @@ export default class Checkout extends Vue {
       body: JSON.stringify(payload),
       method: TFetchActions.POST,
       headers: { "content-type": "application/json" }
-    }).then(() => {
-      alert("OK");
-      this.isPending = false;
-    });
+    })
+      .then(() => {
+        alert("OK");
+        this.isPending = false;
+      })
+      .catch(e => {
+        alert("NOT OK");
+        console.error(e);
+        this.isPending = false;
+      });
   }
 }
 </script>

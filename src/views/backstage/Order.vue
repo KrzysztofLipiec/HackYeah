@@ -6,7 +6,7 @@
           <b-list-group-item class="d-flex justify-content-between" variant="secondary">
             <div class="d-flex align-items-center">
               <b class="ml-1 item-name__title">Item name</b>
-              <b class="ml-1 item-availability__title">Item availability</b>
+              <b class="ml-1 item-availability__title">Item count</b>
               <b class="ml-1 item-price__title">Item price</b>
             </div>
             <div class="d-flex flex-row-reverse align-content-center">
@@ -26,7 +26,13 @@
           >
             <div class="d-flex align-items-center">
               <b class="ml-1 item-name">{{item.name}}</b>
-              <b-form-input class="ml-1 item-price" v-model="item.price" type="number" required></b-form-input>
+              <b-form-input
+                disabled
+                class="ml-1 item-price"
+                v-model="item.count"
+                type="number"
+                required
+              ></b-form-input>
             </div>
             <div class="d-flex align-items-center">
               <div class="mr-5 icon" @click="reportNoGoods(item)">

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Shop Assortment</h1>
     <b-modal v-model="isEditModalOpen" hide-footer title="Edit item">
       <b-form>
         <b-form-group label="Name:" label-for="name">
@@ -133,6 +132,19 @@ export default class ShopAssortment extends Vue {
     void this.fetchShopItems();
   }
 
+  private parseToValidTShopItem(item: TShopItem): TShopItem {
+    return {
+      id: item.id,
+      shopName: item.shopName,
+      name: item.name,
+      count: parseInt(item.count.toString()),
+      price: parseFloat(item.price.toString()),
+      availability: item.availability,
+      photo: item.photo,
+      measure: item.measure
+    };
+  }
+
   private async fetchShopItems(): Promise<void> {
     const apiResponse: Response = await fetch(
       `${state.apiUrl}products/${state.shopName}`,
@@ -143,18 +155,20 @@ export default class ShopAssortment extends Vue {
   }
 
   private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
+    const validItem: TShopItem = this.parseToValidTShopItem(item);
     await fetch(`${state.apiUrl}products/${state.shopName}`, {
       method: `${TFetchActions.POST}`,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(item)
+      body: JSON.stringify(validItem)
     });
   }
 
   private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
+    const validItem: TShopItem = this.parseToValidTShopItem(item);
     await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {
       method: `${TFetchActions.PUT}`,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(item)
+      body: JSON.stringify(validItem)
     });
   }
 

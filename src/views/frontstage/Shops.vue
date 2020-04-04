@@ -25,7 +25,7 @@ interface SelectOption<T> {
   value: T;
 }
 import { Component, Prop, Vue } from "vue-property-decorator";
-import LeafletMap from "../components/LeafletMap.vue";
+import LeafletMap from "../../components/LeafletMap.vue";
 
 @Component({
   components: { LeafletMap }

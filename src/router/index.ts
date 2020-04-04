@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/backstage/Dashboard.vue')
   },
   {
+    path: '/order/shop/:orderId',
+    name: 'ShopOrder',
+    component: () => import('../views/backstage/Order.vue')
+  },
+  {
     path: '/registration',
     name: 'Registration',
     // route level code-splitting

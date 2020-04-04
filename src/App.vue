@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <DebugMenu />
+    <NavigationBar />
     <router-view />
   </div>
 </template>
 <script>
-import DebugMenu from "./components/DebugMenu.vue";
+import NavigationBar from "./components/NavigationBar.vue";
 import state from "@/state";
 export default {
   name: "App",
   components: {
-    DebugMenu
+    NavigationBar
   },
   data() {
     return {};
@@ -48,12 +48,26 @@ export default {
 };
 </script>
 <style>
+:root {
+  --main-bg-color: #F5F5F6;
+  --primary-color: #4527a0;
+  --primary-color-dark: #000070;
+  --primary-color-light: #7953d2;
+  --secondary-color: #7bb241;
+  --secondary-color-dark: #4a820c;
+  --secondary-color-light: #ade470;
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #000000;
+  --text-on-bg: #1b1b1b;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  height: 100vh;
+  background-color: var(--main-bg-color);
+  color: var(--text-on-bg);
 }
 
 li {
@@ -63,18 +77,5 @@ li {
 ul {
   margin: 0;
   padding: 0;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

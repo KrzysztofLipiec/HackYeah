@@ -66,9 +66,9 @@
     <b-list-group>
       <b-list-group-item class="d-flex justify-content-between" variant="secondary">
         <div class="d-flex align-items-center">
-          <b class="ml-1 item-name__title">Item name</b>
-          <b class="ml-1 item-availability__title">Item availability</b>
-          <b class="ml-1 item-price__title">Item price</b>
+          <b class="ml-1 item-name__title">Name</b>
+          <b class="ml-1 item-availability__title">Availability</b>
+          <b class="ml-1 item-price__title">Price</b>
         </div>
         <div class="d-flex flex-row-reverse align-content-center">
           <b-button class="mr-2" @click="addNewItem" variant="success" size="xs">Add</b-button>

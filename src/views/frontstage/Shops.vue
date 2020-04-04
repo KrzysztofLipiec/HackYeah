@@ -1,6 +1,7 @@
 <template>
   <div class="shops">
     <b-container>
+      <h1>Select shops</h1>
       <b-form @submit="onSubmit">
         <b-form-group id="input-group-1" label="How far can you go?" label-for="input-1">
           <b-form-select id="input-1" v-model="selectedDistance" :options="distances" required></b-form-select>
@@ -96,6 +97,7 @@ export default class Shops extends Vue {
         2
       )
     );
+    this.$router.push("collectingItems");
   }
 }
 </script>

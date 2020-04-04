@@ -15,7 +15,12 @@ const routes = [
   {
     path: '/shops',
     name: 'Shops',
-    component: Shops
+    component: () => import('../views/frontstage/Shops.vue')
+  },
+  {
+    path: '/collectingItems',
+    name: 'CollectingItems',
+    component: () => import('../views/frontstage/CollectingItems.vue')
   },
   {
     path: '/backstageDashboard',

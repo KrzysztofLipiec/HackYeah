@@ -14,6 +14,28 @@
         }
     },
     "favicon.ico": {},
+    "itemSuggestions": {
+        "0": {
+            "name": "carrots",
+            "availability": "high",
+            "measure": "kg"
+        },
+        "1": {
+            "name": "onion",
+            "availability": "medium",
+            "measure": "kg"
+        },
+        "2": {
+            "name": "potatoes",
+            "availability": "low",
+            "measure": "kg"
+        },
+        "3": {
+            "name": "rolls",
+            "availability": "low",
+            "measure": "piece"
+        }
+    },
     "orders": {
         "0": {
             "name": "chrabo",

@@ -1,9 +1,9 @@
 <template>
     <div id="nav" class="d-flex justify-content-around">
-        <router-link v-show="isDealer" to="/">Home</router-link>
+        <router-link v-show="isDealer && $route" to="/">Home</router-link>
         <router-link to="/orders-list">Orders</router-link>
-        <router-link v-show="isDealer()" to="/backstageDashboard">Dashboard</router-link>
-        <router-link v-show="isDealer()" to="/shop-assortment">Assortment</router-link>
+        <router-link v-show="isDealer() && $route" to="/backstageDashboard">Dashboard</router-link>
+        <router-link v-show="isDealer() && $route" to="/shop-assortment">Assortment</router-link>
     </div>
 </template>
 
@@ -12,16 +12,17 @@
 
     @Component
     export default class NavigationBar extends Vue {
+        update: boolean = false;
 
         constructor() {
             super();
             this.$root.$on('refresh-force', () => {
-                window.location.reload();
+                this.$forceUpdate()
             })
         }
 
         public isDealer(): boolean {
-            return window.localStorage && !!window.localStorage.getItem('shopName');
+            return !!this.$router.currentRoute == true && window.localStorage && !!window.localStorage.getItem('shopName');
         }
 
         public isClientAnd(): boolean {

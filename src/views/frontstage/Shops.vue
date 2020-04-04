@@ -12,9 +12,17 @@
         >
           <b-form-select id="input-2" v-model="selectedHour" :options="hours" required></b-form-select>
         </b-form-group>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-form-group label="Select shops that you can go to:">
+          <leaflet-map ref="map"></leaflet-map>
+        </b-form-group>
+
+        <b-button
+          class="float-right"
+          type="submit"
+          size="lg"
+          variant="success"
+        >Proceed to item selection</b-button>
       </b-form>
-      <leaflet-map></leaflet-map>
     </b-container>
   </div>
 </template>
@@ -77,7 +85,17 @@ export default class Shops extends Vue {
 
   onSubmit(e: Event) {
     e.preventDefault();
-    alert(JSON.stringify([this.selectedDistance, this.selectedHour], null, 2));
+    alert(
+      JSON.stringify(
+        [
+          this.selectedDistance,
+          this.selectedHour,
+          (this.$refs.map as LeafletMap).getSelection()
+        ],
+        null,
+        2
+      )
+    );
   }
 }
 </script>

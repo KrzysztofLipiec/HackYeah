@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/frontstage/CollectingItems.vue')
   },
   {
+    path: '/checkout',
+    name: 'Checkout',
+    component: () => import('../views/frontstage/Checkout.vue')
+  },
+  {
     path: '/backstageDashboard',
     name: 'BackstageDashboard',
     component: () => import('../views/backstage/Dashboard.vue')

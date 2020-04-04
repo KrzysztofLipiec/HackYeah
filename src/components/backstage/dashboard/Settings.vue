@@ -61,6 +61,10 @@ export default class Settings extends Vue {
       from: "",
       to: ""
     },
+    location: {
+      lat: 0,
+      lng: 0
+    },
     size: ShopSize.medium,
     logo: ""
   };

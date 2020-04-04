@@ -36,7 +36,13 @@
           <b-col>
             <h1>My cart 🛒</h1>
             <cart-summary :items="selectedItems"></cart-summary>
-            <b-button v-if="hasSomethingInCart" type="submit" size="lg" variant="success">Checkout</b-button>
+            <div v-if="hasSomethingInCart">
+              <b-button type="submit" size="lg" variant="success">Checkout</b-button>
+              <p class="small">
+                Changed your mind?
+                <b-link href="#" @click="clearCart">Clear your cart</b-link>
+              </p>
+            </div>
           </b-col>
         </b-row>
       </b-form>
@@ -60,7 +66,7 @@ const lengthThreshold = 3;
 export default class CollectingItems extends Vue {
   public query: string = "";
   public selectedItems: TShopItem[] = [];
-  public suggestions: TShopItem[] = this.getMostPopularItems();
+  public suggestions: TShopItem[] = [];
 
   get hasSomethingInCart(): boolean {
     return this.selectedItems.length > 0;
@@ -76,24 +82,25 @@ export default class CollectingItems extends Vue {
     return `Showing items containing "${this.query}"`;
   }
 
-  async fetchItemSuggestions(query: string): Promise<TShopItem[]> {
-    const response = await fetch(`${state.apiUrl}itemSuggestions`);
+  async fetchItemSuggestions(
+    query: string,
+    shops: string[],
+    limit: number = 10
+  ): Promise<TShopItem[]> {
+    const response = await fetch(
+      `${
+        state.apiUrl
+      }products?search=${query}&limit=${limit}&shops=${shops.join(",")}`
+    );
     return response.json();
   }
 
-  getMostPopularItems(): TShopItem[] {
-    return [
-      {
-        id: "piwko",
-        name: "Piwo",
-        count: 1,
-        price: 1,
-        shopName: "Żabka",
-        availability: Availability.high,
-        photo: "",
-        measure: Measure.kg
-      }
-    ];
+  clearCart(e: MouseEvent) {
+    e.preventDefault();
+    while (this.selectedItems.length) {
+      this.selectedItems.pop();
+    }
+    state.cart.items.length = 0;
   }
 
   getVariant(suggestion: TShopItem): string {
@@ -105,14 +112,24 @@ export default class CollectingItems extends Vue {
   }
 
   mounted() {
-    this.selectedItems.length = 0;
+    this.fetchItemSuggestions("", state.selectedShops).then(suggestions => {
+      this.suggestions.push(...suggestions);
+    });
+    while (this.selectedItems.length) {
+      this.selectedItems.pop();
+    }
     this.selectedItems.push(...state.cart.items);
   }
 
   async onQueryInput() {
     if (this.query.length >= lengthThreshold) {
-      let fetchedSuggestions = await this.fetchItemSuggestions(this.query);
-      this.suggestions.length = 0;
+      let fetchedSuggestions = await this.fetchItemSuggestions(
+        this.query,
+        state.selectedShops
+      );
+      while (this.suggestions.length) {
+        this.suggestions.pop();
+      }
       this.suggestions.push(...Object.values(fetchedSuggestions));
     }
   }

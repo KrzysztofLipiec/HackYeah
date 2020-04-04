@@ -6,6 +6,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import markerIconDataUrl from "@/assets/marker-icon.png";
 import markerIcon2DataUrl from "@/assets/marker-icon-2.png";
 import state from "../state";
+import { TSettings } from "@/interfaces/TSettings";
 declare let L: any;
 const defaultZoom = 14;
 const markerIcon = new L.Icon({ iconUrl: markerIconDataUrl });
@@ -16,11 +17,7 @@ export default class LeafletMap extends Vue {
   private locationMarker: any;
   private map: any;
   private storeLayers: any[] = [];
-  private selectedStores: any[] = [];
-
-  public getSelection(): any[] {
-    return this.selectedStores;
-  }
+  private selectedStores: TSettings[] = [];
 
   private clearStores() {
     if (this.map) {
@@ -29,20 +26,20 @@ export default class LeafletMap extends Vue {
     }
   }
 
-  private drawStores(stores: any[]) {
+  private drawStores(stores: TSettings[]) {
     stores.forEach(s => {
       const marker = new L.Marker(s.location);
       marker.setIcon(
         this.selectedStores.includes(s) ? markerIcon2 : markerIcon
       );
       marker.data = s;
-      marker.on("click", (e: any) => this.spawnPopup(e.target));
+      marker.on("click", (e: MouseEvent) => this.spawnPopup(e.target));
       this.map.addLayer(marker);
       this.storeLayers.push(marker);
     });
   }
 
-  private async getStores(latlng: any) {
+  private async getStores(latlng: any): Promise<{ [key: string]: TSettings }> {
     return (
       await fetch(`${state.apiUrl}shops`, {
         method: "GET"
@@ -95,13 +92,18 @@ export default class LeafletMap extends Vue {
         this.selectedStores.push(store);
         marker.setIcon(markerIcon2);
       }
+      this.$emit(
+        "shops",
+        this.selectedStores.map(s => s.shopName)
+      );
     }
   }
 
   private spawnPopup(marker: any) {
-    const store = marker.data;
+    const store: TSettings = marker.data;
     const popupContent = document.createElement("div");
-    popupContent.innerHTML = `<h4>(shop name)</h4><p>Location<br>Opening hours<br>Other info</p><button class="btn btn-sm btn-primary btn-block">Toggle</button>`;
+
+    popupContent.innerHTML = `<img src="${store.logo}" style="width: 100px"/><p class="text-left"><strong>${store.shopName}</strong><br>🗺 ${store.address}<br>⌚ ${store.openHours.from}-${store.openHours.to}</p><button class="btn btn-sm btn-primary btn-block">Select</button>`;
     popupContent.addEventListener("click", (e: MouseEvent) =>
       this.onPopupClick(e, store, marker)
     );

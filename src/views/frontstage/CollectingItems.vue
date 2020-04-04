@@ -80,6 +80,7 @@ export default class CollectingItems extends Vue {
         name: "Piwo",
         count: 1,
         price: 1,
+        shopName: "Żabka",
         availability: Availability.high,
         photo: "",
         measure: Measure.kg

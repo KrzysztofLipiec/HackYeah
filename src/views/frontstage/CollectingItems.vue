@@ -36,7 +36,13 @@
           <b-col>
             <h1>My cart 🛒</h1>
             <cart-summary :items="selectedItems"></cart-summary>
-            <b-button v-if="hasSomethingInCart" type="submit" size="lg" variant="success">Checkout</b-button>
+            <div v-if="hasSomethingInCart">
+              <b-button type="submit" size="lg" variant="success">Checkout</b-button>
+              <p class="small">
+                Changed your mind?
+                <b-link href="#" @click="clearCart">Clear your cart</b-link>
+              </p>
+            </div>
           </b-col>
         </b-row>
       </b-form>
@@ -81,6 +87,14 @@ export default class CollectingItems extends Vue {
     return response.json();
   }
 
+  clearCart(e: MouseEvent) {
+    e.preventDefault();
+    while (this.selectedItems.length) {
+      this.selectedItems.pop();
+    }
+    state.cart.items.length = 0;
+  }
+
   getMostPopularItems(): TShopItem[] {
     return [
       {
@@ -105,7 +119,9 @@ export default class CollectingItems extends Vue {
   }
 
   mounted() {
-    this.selectedItems.length = 0;
+    while (this.selectedItems.length) {
+      this.selectedItems.pop();
+    }
     this.selectedItems.push(...state.cart.items);
   }
 

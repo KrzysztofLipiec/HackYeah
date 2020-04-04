@@ -27,42 +27,24 @@
 </template>
 
 <script lang="ts">
-    import { Component, Prop, Vue } from 'vue-property-decorator';
+    import {Component, Vue} from 'vue-property-decorator';
     import {TShopOrder} from "@/interfaces/TShopOrder";
 
     @Component
     export default class OrdersList extends Vue {
-        @Prop() public orders: TShopOrder[] = [];
+        private orders: TShopOrder[] = [];
         constructor() {
             super();
-            this.fetchOrders();
+            void this.fetchOrders();
         }
-        private fetchOrders(): void {
+
+        private async fetchOrders(): Promise<void> {
             const userId: string = (<any>window).getUserId();
-            const item: TShopOrder = {
-                name: 'chrabo',
-                shopPhoto: 'https://ocs-pl.oktawave.com/v1/AUTH_2887234e-384a-4873-8bc5-405211db13a2/spidersweb/2020/04/biedronka-godziny-otwarcia-1180x541.jpg',
-                items: [
-                    {
-                        name: 'carrots',
-                        count: 12,
-                        price: 2
-                    },
-                    {
-                        name: 'potatoes',
-                        count: 50,
-                        price: 100
-                    }
-                    ,{
-                        name: 'onion',
-                        count: 6,
-                        price: 20
-                    }
-                ]
-            };
-            for(let i = 0; i < 10; i++) {
-                this.orders.push(item);
-            }
+            const response: Response = await fetch('http://localhost:9123/orders',
+                {
+                method: "GET",
+                });
+            this.orders = await response.json();
         }
     }
 </script>

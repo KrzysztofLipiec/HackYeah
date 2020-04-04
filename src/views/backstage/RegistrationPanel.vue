@@ -37,13 +37,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import state from "../state";
+import { Component, Vue } from "vue-property-decorator";
 import { TForm } from "@/interfaces/TForm";
+import state from "@/state";
 
 @Component
 export default class RegistrationPanel extends Vue {
-  @Prop() private form: TForm;
+  private form: TForm;
 
   constructor() {
     super();

@@ -95,6 +95,7 @@ export default class ShopAssortment extends Vue {
     isNewItem: boolean = false;
     selectedItemData: TShopItem;
     selectedItemIndex: number;
+    shopName: string = 'dupa';
 
     constructor() {
         super();
@@ -108,6 +109,7 @@ export default class ShopAssortment extends Vue {
             Measure.kg
         ];
         this.selectedItemIndex = 0;
+        this.shopName = (<any>window).getShopName();
         this.selectedItemData = this.createEmptyItem();
         this.shopItems = this.fetchShopItems();
     }
@@ -115,6 +117,7 @@ export default class ShopAssortment extends Vue {
     private createEmptyItem(): TShopItem {
         return {
             name: '',
+            shopName: '',
             count: 0,
             price: 0,
             measure: Measure.piece,
@@ -170,6 +173,7 @@ export default class ShopAssortment extends Vue {
         for (let i = 0; i < 10; i++) {
             const shopItem: TShopItem = {
                 name: 'carrot',
+                shopName: this.shopName,
                 count: 12,
                 price: 100,
                 availability: Availability.medium,

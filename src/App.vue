@@ -25,7 +25,7 @@ export default {
       state.shopName = localStorage.getItem("shopName");
     },
     bootstrapStore() {
-      if (!window.getUSerId) {
+      if (!window.getUserId) {
         window.getUserId = () => {
           return localStorage.getItem("hackYeahUserID");
         };

@@ -1,7 +1,3 @@
-import {Measure} from "@/interfaces/Measure";
-import {Measure} from "@/interfaces/Measure";
-import {Availability} from "@/interfaces/Availability";
-import {Measure} from "@/interfaces/Measure";
 <template>
     <div>
         <h1>Shop Assortment</h1>
@@ -123,11 +119,11 @@ import {Measure} from "@/interfaces/Measure";
         }
 
         private async backendProcedureCreateItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, body: JSON.stringify(item)});
+            await fetch(`${state.apiUrl}products/${state.shopName}`, {method: `${TFetchActions.POST}`, headers: {'content-type': 'application/json'},  body: JSON.stringify(item)});
         }
 
         private async backendProcedureUpdateItem(item: TShopItem): Promise<void> {
-            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, body: JSON.stringify(item)});
+            await fetch(`${state.apiUrl}products/${state.shopName}/${item.id}`, {method: `${TFetchActions.PUT}`, headers: {'content-type': 'application/json'}, body: JSON.stringify(item)});
         }
 
         private async backendProcedureRemoveItem(item: TShopItem): Promise<void> {

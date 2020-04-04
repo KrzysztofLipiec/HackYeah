@@ -18,6 +18,10 @@ export default class LeafletMap extends Vue {
   private storeLayers: any[] = [];
   private selectedStores: any[] = [];
 
+  public getSelection(): any[] {
+    return this.selectedStores;
+  }
+
   private clearStores() {
     if (this.map) {
       this.storeLayers.forEach(sl => this.map.removeLayer(sl));

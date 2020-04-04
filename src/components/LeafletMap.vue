@@ -44,7 +44,7 @@ export default class LeafletMap extends Vue {
 
   private async getStores(latlng: any) {
     return (
-      await fetch(`${state.apiUrl}map/${latlng.lat}/${latlng.lng}/2`, {
+      await fetch(`${state.apiUrl}shops`, {
         method: "GET"
       })
     ).json();
@@ -72,7 +72,7 @@ export default class LeafletMap extends Vue {
       this.locationMarker = new L.circleMarker(locationEvent.latlng);
       this.clearStores();
       let stores = await this.getStores(locationEvent.latlng);
-      this.drawStores(stores);
+      this.drawStores(Object.values(stores));
       this.map.addLayer(this.locationMarker);
     } else {
       this.locationMarker.setLatLng(locationEvent.latlng);

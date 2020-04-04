@@ -14,15 +14,18 @@
           <b-form-select id="input-2" v-model="selectedHour" :options="hours" required></b-form-select>
         </b-form-group>
         <b-form-group label="Select shops that you can go to:">
-          <leaflet-map ref="map"></leaflet-map>
+          <leaflet-map v-on:shops="onSelectedShopsChanged"></leaflet-map>
         </b-form-group>
 
-        <b-button
-          class="float-right"
-          type="submit"
-          size="lg"
-          variant="success"
-        >Proceed to item selection</b-button>
+        <div class="float-right">
+          <b-button
+            :disabled="!hasAnyStoreSelected"
+            type="submit"
+            size="lg"
+            variant="success"
+          >Proceed to item selection</b-button>
+          <p v-if="!hasAnyStoreSelected" class="small">Select at least one shop to proceed.</p>
+        </div>
       </b-form>
     </b-container>
   </div>
@@ -35,12 +38,14 @@ interface SelectOption<T> {
 }
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LeafletMap from "../../components/LeafletMap.vue";
+import state from "../../state";
 
 @Component({
   components: { LeafletMap }
 })
 export default class Shops extends Vue {
   private distances: SelectOption<number>[];
+  private hasAnyStoreSelected: boolean = false;
   private hours: SelectOption<number>[];
   private selectedDistance: number;
   private selectedHour: number;
@@ -84,19 +89,17 @@ export default class Shops extends Vue {
     return result;
   }
 
+  onSelectedShopsChanged(shopNames: string[]) {
+    while (state.selectedShops.length) {
+      state.selectedShops.pop();
+    }
+    state.selectedShops.push(...shopNames);
+    this.hasAnyStoreSelected = shopNames.length > 0;
+  }
+
   onSubmit(e: Event) {
     e.preventDefault();
-    console.log(
-      JSON.stringify(
-        [
-          this.selectedDistance,
-          this.selectedHour,
-          (this.$refs.map as LeafletMap).getSelection()
-        ],
-        null,
-        2
-      )
-    );
+    state.cart.pickupTime = this.selectedHour;
     this.$router.push("collectingItems");
   }
 }

@@ -5,6 +5,7 @@ interface State {
     userName: string;
     shopName: string;
     cart: TCart;
+    selectedShops: string[];
 }
 
 let stateDefault: State = {
@@ -14,7 +15,8 @@ let stateDefault: State = {
     cart: {
         pickupTime: 0,
         items: []
-    }
+    },
+    selectedShops: []
 }
 let state: State | null = null;
 export default state = state || stateDefault;

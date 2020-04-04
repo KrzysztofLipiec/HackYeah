@@ -1,9 +1,9 @@
 <template>
     <div id="nav" class="d-flex justify-content-around">
-        <router-link to="/">Home</router-link>
-        <router-link v-show="!isDealer" to="/orders-list">Orders</router-link>
-        <router-link v-show="isDealer" to="/backstageDashboard">Dashboard</router-link>
-        <router-link v-show="isDealer" to="/shop-assortment">Assortment</router-link>
+        <router-link v-show="!isDealer()" to="/">Home</router-link>
+        <router-link to="/orders-list">Orders</router-link>
+        <router-link v-show="isDealer()" to="/backstageDashboard">Dashboard</router-link>
+        <router-link v-show="isDealer()" to="/shop-assortment">Assortment</router-link>
     </div>
 </template>
 

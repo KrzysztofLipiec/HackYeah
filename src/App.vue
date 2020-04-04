@@ -6,6 +6,7 @@
 </template>
 <script>
 import DebugMenu from "./components/DebugMenu.vue";
+import state from "@/state";
 export default {
   name: "App",
   components: {
@@ -16,9 +17,12 @@ export default {
   },
   methods: {
     generateUserId() {
+      let userName = "januszShop";
       if (!localStorage.getItem("hackYeahUserID")) {
-        localStorage.setItem("hackYeahUserID", this.uuidv4());
+        localStorage.setItem("hackYeahUserID", userName);
       }
+
+      state.userName = userName;
     },
     bootstrapStore() {
       if (!window.getUSerId) {

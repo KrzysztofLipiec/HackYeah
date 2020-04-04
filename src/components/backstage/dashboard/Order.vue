@@ -1,7 +1,53 @@
-<template></template>
+<template>
+  <b-container>
+    <b-row>
+      <b-col md="4" offset-md="4">
+        <h2>Orders</h2>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-list-group class="orders-list">
+          <b-list-group-item v-for="(order, index) in orders" :key="index">
+            <span>{{order.name}}</span>
+            <span>{{(new Date(order.timestamp)).toLocaleTimeString()}}</span>
+          </b-list-group-item>
+        </b-list-group>
+      </b-col>
+    </b-row>
+  </b-container>
+</template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { TShopOrder } from "../../../interfaces/TShopOrder";
+import state from "@/state";
 
 @Component
-export default class Order extends Vue {}
+export default class Order extends Vue {
+  private shopName: string = "";
+  private interval: number = 0;
+  private orders: Array<TShopOrder> = [];
+
+  public mounted(): void {
+    this.getOrders();
+    this.interval = setInterval(this.getOrders, 10000);
+  }
+  private async getOrders(): Promise<void> {
+    this.orders = await (
+      await fetch(`${state.apiUrl}orders/${state.userName}`)
+    ).json();
+  }
+  public destroyed(): void {
+    clearInterval(this.interval);
+  }
+}
 </script>
+<style scoped>
+.orders-list {
+  text-align: left;
+}
+.orders-list > .list-group-item {
+  display: flex;
+  justify-content: space-between;
+}
+</style>

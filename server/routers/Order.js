@@ -8,6 +8,17 @@ class Orders extends AbstractRouterHandler_1.AbstractRouterHandler {
         this.router.route('/orders').get(this.getAllOrders.bind(this));
         this.router.route('/orders/shop/:shopName').get(this.getOrders.bind(this));
         this.router.route('/orders/user/:userName').get(this.getUserOrders.bind(this));
+        this.router.route('/orders/:id').get(this.getOrderById.bind(this));
+        this.router.route('/orders/:id/:status').post(this.setOrderReady.bind(this));
+    }
+    setOrderReady(req, res) {
+        this._getOrderById(req.params.id).status = req.params.status;
+    }
+    _getOrderById(id) {
+        return this.orders.find(order => order.id === id);
+    }
+    getOrderById(req, res) {
+        res.json(this._getOrderById(req.params.id));
     }
     getUserOrders(req, res) {
         res.json(this.orders.filter((order) => {

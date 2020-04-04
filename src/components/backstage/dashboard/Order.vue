@@ -8,7 +8,12 @@
     <b-row>
       <b-col>
         <b-list-group class="orders-list">
-          <b-list-group-item v-for="(order, index) in orders" :key="index">
+          <b-list-group-item
+            v-for="(order, index) in orders"
+            :key="index"
+            @click="$router.push(`/order/shop/${order.id}`)"
+            button
+          >
             <span>{{order.name}}</span>
             <span>{{(new Date(order.timestamp)).toLocaleTimeString()}}</span>
           </b-list-group-item>

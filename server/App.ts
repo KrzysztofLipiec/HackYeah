@@ -22,14 +22,12 @@ class App {
             this.data = {
                 orders: [],
                 products: [],
-                shops: [],
-                users: []
-
+                shops: {},
             };
         }
         this.app.use(bodyParser());
         this.routerHandlers = [
-            new Authentication(this.data.users),
+            new Authentication(this.data.shops),
             new MapRouter(),
             new Orders(this.data.orders),
             new Products(this.data.products),

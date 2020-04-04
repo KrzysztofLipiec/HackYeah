@@ -35,8 +35,8 @@ class App {
             new Generic_1.Generic(this.data)
         ];
         this.setHeaders();
-        this.setRouters();
         this.setFileSaver();
+        this.setRouters();
         this.listen();
     }
     setRouters() {

@@ -34,8 +34,8 @@ class App {
         ];
 
         this.setHeaders();
-        this.setRouters();
         this.setFileSaver();
+        this.setRouters();
         this.listen();
     }
 

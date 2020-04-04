@@ -4,37 +4,39 @@
       <b-form autocomplete="off" @submit="onSubmit">
         <b-row>
           <b-col cols="8">
-            <h1>What do you need?</h1>
-            <b-form-group>
-              <b-input type="search" @input="onQueryInput" v-model="query"></b-input>
-              <b-form-text>{{ helpingText }}</b-form-text>
-            </b-form-group>
-            <b-list-group>
-              <b-list-group-item
-                :variant="getVariant(suggestion)"
-                v-for="(suggestion, index) in suggestions"
-                :key="suggestion.name"
-              >
-                <div class="d-flex justify-content-between">
-                  {{ suggestion.name }}
-                  <b-button
-                    v-if="!isSuggestionSelected(suggestion)"
-                    variant="primary"
-                    @click="toggleSuggestion($event, suggestion, index)"
-                  >Dodaj</b-button>
-                  <b-button
-                    v-if="isSuggestionSelected(suggestion)"
-                    variant="light"
-                    @click="toggleSuggestion($event, suggestion, index)"
-                  >Usuń</b-button>
-                </div>
-              </b-list-group-item>
-            </b-list-group>
+            <b-card>
+              <h1>What do you need?</h1>
+              <b-form-group>
+                <b-input type="search" @input="onQueryInput" v-model="query"></b-input>
+                <b-form-text>{{ helpingText }}</b-form-text>
+              </b-form-group>
+              <b-list-group>
+                <b-list-group-item
+                  :variant="getVariant(suggestion)"
+                  v-for="(suggestion, index) in suggestions"
+                  :key="suggestion.name"
+                >
+                  <div class="d-flex justify-content-between">
+                    {{ suggestion.name }}
+                    <b-button
+                      v-if="!isSuggestionSelected(suggestion)"
+                      variant="primary"
+                      @click="toggleSuggestion($event, suggestion, index)"
+                    >Add</b-button>
+                    <b-button
+                      v-if="isSuggestionSelected(suggestion)"
+                      variant="light"
+                      @click="toggleSuggestion($event, suggestion, index)"
+                    >Remove</b-button>
+                  </div>
+                </b-list-group-item>
+              </b-list-group>
+            </b-card>
           </b-col>
           <b-col>
             <h1>My cart 🛒</h1>
-            <cart-summary :items="selectedItems"></cart-summary>
-            <b-button type="submit" size="lg" variant="success">Checkout</b-button>
+            <cart-summary :orders="shopOrders"></cart-summary>
+            <b-button v-if="hasSomethingInCart" type="submit" size="lg" variant="success">Checkout</b-button>
           </b-col>
         </b-row>
       </b-form>
@@ -48,6 +50,7 @@ import { Availability } from "../../interfaces/Availability";
 import { Measure } from "../../interfaces/Measure";
 import CartSummary from "@/components/frontstage/CartSummary.vue";
 import state from "../../state";
+import { TShopOrder } from "../../interfaces/TShopOrder";
 
 const lengthThreshold = 3;
 
@@ -58,6 +61,10 @@ export default class CollectingItems extends Vue {
   public query: string = "";
   public selectedItems: TShopItem[] = [];
   public suggestions: TShopItem[] = this.getMostPopularItems();
+
+  get hasSomethingInCart(): boolean {
+    return this.selectedItems.length > 0;
+  }
 
   get helpingText(): string {
     if (this.query.length === 0) {
@@ -88,12 +95,40 @@ export default class CollectingItems extends Vue {
     ];
   }
 
+  get shopOrders(): TShopOrder[] {
+    // TODO, fetch it
+    const groupedItems = new Map<string, TShopItem[]>();
+    this.selectedItems.forEach(item => {
+      if (!groupedItems.has(item.shopName)) {
+        groupedItems.set(item.shopName, []);
+      }
+      groupedItems.get(item.shopName)!.push(item);
+    });
+    const result: TShopOrder[] = [];
+    groupedItems.forEach((items, shopName) => {
+      const order: TShopOrder = {
+        name: shopName,
+        shopPhoto: "",
+        items: items,
+        timestamp: Date.now()
+      };
+      result.push(order);
+    });
+    return result;
+  }
+
   getVariant(suggestion: TShopItem): string {
     return this.isSuggestionSelected(suggestion) ? "primary" : "";
   }
 
   isSuggestionSelected(suggestion: TShopItem): boolean {
     return this.selectedItems.some(si => suggestion.name === si.name);
+  }
+
+  mounted() {
+    this.selectedItems.length = 0;
+    const shopOrders = state.cart.shopOrders;
+    this.selectedItems.push(...shopOrders.flatMap(o => o.items));
   }
 
   async onQueryInput() {
@@ -106,7 +141,9 @@ export default class CollectingItems extends Vue {
 
   onSubmit(e: Event): void {
     e.preventDefault();
-    alert(JSON.stringify(this.selectedItems, null, 2));
+    console.log(this.selectedItems);
+    state.cart = { shopOrders: this.shopOrders };
+    this.$router.push("checkout");
   }
 
   toggleSuggestion(e: MouseEvent, suggestion: TShopItem, index: number) {
@@ -114,7 +151,10 @@ export default class CollectingItems extends Vue {
     if (this.isSuggestionSelected(suggestion)) {
       this.selectedItems.splice(this.selectedItems.indexOf(suggestion), 1);
     } else {
-      this.selectedItems.push(suggestion);
+      this.selectedItems.push({
+        count: 1,
+        ...suggestion
+      });
     }
   }
 }

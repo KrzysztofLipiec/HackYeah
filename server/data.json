@@ -3,24 +3,32 @@
     "favicon.ico": {},
     "itemSuggestions": {
         "0": {
+            "shopName": "januszShop",
             "name": "carrots",
             "availability": "high",
-            "measure": "kg"
+            "measure": "kg",
+            "price": 2.4
         },
         "1": {
+            "shopName": "januszShop",
             "name": "onion",
             "availability": "medium",
-            "measure": "kg"
+            "measure": "kg",
+            "price": 1.24
         },
         "2": {
+            "shopName": "januszShop",
             "name": "potatoes",
             "availability": "low",
-            "measure": "kg"
+            "measure": "kg",
+            "price": 0.78
         },
         "3": {
+            "shopName": "januszShop",
             "name": "rolls",
             "availability": "low",
-            "measure": "piece"
+            "measure": "piece",
+            "price": 0.19
         }
     },
     "orders": [

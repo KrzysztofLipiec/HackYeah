@@ -86,7 +86,7 @@ export default class Shops extends Vue {
 
   onSubmit(e: Event) {
     e.preventDefault();
-    alert(
+    console.log(
       JSON.stringify(
         [
           this.selectedDistance,

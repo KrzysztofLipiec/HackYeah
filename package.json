@@ -28,7 +28,7 @@
         "@vue/cli-plugin-router": "^4.2.0",
         "@vue/cli-plugin-typescript": "^4.2.0",
         "@vue/cli-service": "^4.2.0",
-        "express": "^4.16.4",
+        "express": "^4.17.3",
         "typescript": "~3.7.5",
         "vue-template-compiler": "^2.6.11"
     },
